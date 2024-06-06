@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mera_bazaar/ui/login/widget/mobile_text_field.dart';
 import 'package:mera_bazaar/ui/otp/opt_screen.dart';
+import 'package:mera_bazaar/ui/widets/loading_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -30,29 +31,32 @@ class LoginScreen extends StatelessWidget {
             height: 30,
           ),
           MobileTextField(
-            onSave: (String? value) {
-              print("onSave $value");
-            },
             onChange: (String? value) {
               print("onChange $value");
             },
           ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade500,
-                  fixedSize: const Size(240, 40),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)))),
-              onPressed: () {
-                Navigator.push(context,
-                    (MaterialPageRoute(builder: (context) => const OtpScreen())));
-              },
-              child: const Text(
-                "Send OTP",
-                style: TextStyle(color: Colors.white),
-              ))
+          LoadingButton(text: "Send OTP", onPress: () => _funDelay(context))
         ],
       ),
     );
+  }
+
+  void _funDelay(context) async {
+    await Future.delayed(const Duration(seconds: 5));
+    final snackBar = SnackBar(
+      elevation: 10,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(5),
+      content: const Text(
+        "OTP successfully send to your mobile number",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.green.shade900,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    Navigator.push(
+        context, (MaterialPageRoute(builder: (context) => const OtpScreen())));
   }
 }

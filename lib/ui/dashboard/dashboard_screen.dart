@@ -33,13 +33,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.blue.shade900,
+        ),
         body: PageView(
           controller: _pageController,
           children: _pages,
         ),
         bottomNavigationBar: BottomAppBar(
-          height: 100,
+          height: 90,
           shape: const CircularNotchedRectangle(),
           notchMargin: 5.0,
           color: Colors.white,
@@ -50,34 +53,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
             height: kBottomNavigationBarHeight,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-           backgroundColor: Colors.white,
-           //ß   backgroundColor: Colors.blue,
+              backgroundColor: Colors.white,
+              selectedLabelStyle: TextStyle(
+                  color: Colors.blue.shade900,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.call),
-                  label: 'Calls',
+                  icon: Icon(Icons.home_outlined),
+                  label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.camera),
-                  label: 'Camera',
+                  icon: Icon(Icons.category_sharp),
+                  label: 'Category',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.chat),
-                  label: 'Chats',
+                  icon: Icon(Icons.notification_add),
+                  label: 'Notification',
                 ),
-
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.chat),
-                  label: 'Chats',
+                  icon: Icon(Icons.account_circle),
+                  label: 'Account',
                 ),
               ],
               currentIndex: _selectedIndex,
               //New
               onTap: _onItemTapped,
-              selectedItemColor: Colors.blueAccent,
+              selectedItemColor: Colors.blue.shade900,
               unselectedItemColor: Colors.grey,
             ),
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 }

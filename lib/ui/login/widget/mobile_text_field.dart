@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class MobileTextField extends StatefulWidget {
-  final Function(String? value) onSave;
   final Function(String? value) onChange;
 
   const MobileTextField(
-      {super.key, required this.onSave, required this.onChange});
+      {super.key, required this.onChange});
 
   @override
   State<MobileTextField> createState() => _MobileTextFieldState();
@@ -55,6 +54,7 @@ class _MobileTextFieldState extends State<MobileTextField> {
           Expanded(
             child: TextFormField(
               controller: _editingController,
+              cursorColor: Colors.black,
               keyboardType: Platform.isIOS?
               const TextInputType.numberWithOptions(signed: true, decimal: true)
                   : TextInputType.number,
@@ -63,7 +63,7 @@ class _MobileTextFieldState extends State<MobileTextField> {
               maxLength: 10,
               maxLines: 1,
               style: const TextStyle(
-                  fontSize: 14, letterSpacing: 4, color: Colors.black),
+                  fontSize: 16, letterSpacing: 1, color: Colors.black),
               decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -81,7 +81,6 @@ class _MobileTextFieldState extends State<MobileTextField> {
               ),
 
               onChanged: widget.onChange,
-              onSaved: widget.onSave,
               validator: (value) {
                 if (value == null) {
                   return "Please enter mobile number";
