@@ -9,11 +9,9 @@ class Pin_Put extends StatefulWidget {
 }
 
 class _Pin_PutState extends State<Pin_Put> {
-
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
-
 
   @override
   void dispose() {
@@ -24,20 +22,20 @@ class _Pin_PutState extends State<Pin_Put> {
 
   @override
   Widget build(BuildContext context) {
-    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-    const fillColor = Color.fromRGBO(243, 246, 249, 0);
-    const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
+    // const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
+    // const fillColor = Color.fromRGBO(243, 246, 249, 0);
+    // const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
       textStyle: const TextStyle(
         fontSize: 22,
-        color: Color.fromRGBO(30, 60, 87, 1),
+        color: Colors.black,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(19),
-        border: Border.all(color: borderColor),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black54),
       ),
     );
 
@@ -54,17 +52,13 @@ class _Pin_PutState extends State<Pin_Put> {
               controller: pinController,
               focusNode: focusNode,
               androidSmsAutofillMethod:
-              AndroidSmsAutofillMethod.smsUserConsentApi,
+                  AndroidSmsAutofillMethod.smsUserConsentApi,
               listenForMultipleSmsOnAndroid: true,
               defaultPinTheme: defaultPinTheme,
-           //   separatorBuilder: (index) => const SizedBox(width: 8),
+              //   separatorBuilder: (index) => const SizedBox(width: 8),
               validator: (value) {
                 return null;
               },
-              // onClipboardFound: (value) {
-              //   debugPrint('onClipboardFound: $value');
-              //   pinController.setText(value);
-              // },
               hapticFeedbackType: HapticFeedbackType.lightImpact,
               onCompleted: (pin) {
                 debugPrint('onCompleted: $pin');
@@ -79,21 +73,21 @@ class _Pin_PutState extends State<Pin_Put> {
                     margin: const EdgeInsets.only(bottom: 9),
                     width: 22,
                     height: 1,
-                    color: focusedBorderColor,
+                    color: Colors.black54,
                   ),
                 ],
               ),
               focusedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: focusedBorderColor),
+                  border: Border.all(color: Colors.black54),
                 ),
               ),
               submittedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
-                  color: fillColor,
-                  borderRadius: BorderRadius.circular(19),
-                  border: Border.all(color: focusedBorderColor),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.black54),
                 ),
               ),
               errorPinTheme: defaultPinTheme.copyBorderWith(
@@ -105,5 +99,4 @@ class _Pin_PutState extends State<Pin_Put> {
       ),
     );
   }
-
 }
