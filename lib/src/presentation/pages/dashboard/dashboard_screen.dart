@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/src/config/di/service_locator.dart';
+import 'package:mera_bazaar/src/config/route/app_routes.dart';
+import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/account/account_screen.dart';
+import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/cart_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
-import 'package:mera_bazaar/src/presentation/pages/dashboard/notification/notification_screen.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -17,6 +22,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final PageController _pageController = PageController();
 
   void _onItemTapped(int index) {
+
+    if(index == 2 || index == 3){
+      if(getIt<LocalStorageManager>().token.isEmpty){
+        context.pushNamed(AppRoutes.login);
+        return;
+      }
+    }
+
     setState(() {
       _selectedIndex = index;
       _pageController.jumpToPage(index);
@@ -24,19 +37,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    const HomeScreen(),
     const CategoryScreen(),
-    const NotificationScreen(),
+    const CartScreen(),
     const AccountScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.blue.shade900,
-        ),
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
@@ -69,8 +78,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   label: 'Category',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.notification_add),
-                  label: 'Notification',
+                  icon: Icon(Icons.shopping_cart),
+                  label: 'Cart',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.account_circle),

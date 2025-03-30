@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mera_bazaar/src/presentation/pages/dashboard/dashboard_screen.dart';
-import 'package:mera_bazaar/src/presentation/pages/login/login_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/src/config/route/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,14 +14,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _goToLoginPage();
+    _goToDashboardPage();
   }
 
-  void _goToLoginPage() async {
+  Future<void> _goToDashboardPage() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      context.goNamed(AppRoutes.dashboard);
     }
   }
 

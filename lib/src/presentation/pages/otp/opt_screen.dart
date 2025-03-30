@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/src/config/route/app_routes.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
-import 'package:mera_bazaar/src/presentation/pages/dashboard/dashboard_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/otp/widgets/otp_fields.dart';
 import 'package:mera_bazaar/src/presentation/widets/loading_button.dart';
 
-class OtpScreen extends StatelessWidget {
-  OtpScreen({super.key});
+class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
 
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -94,10 +100,7 @@ class OtpScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ));
 
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const DashboardScreen()),
-                  (route) => false);
+              context.goNamed(AppRoutes.dashboard);
             } else if (state is VerifyOtpError) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.message),
@@ -108,5 +111,11 @@ class OtpScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
