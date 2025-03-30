@@ -11,9 +11,10 @@ VerifyOtpResponse _$VerifyOtpResponseFromJson(Map<String, dynamic> json) =>
       success: json['success'] as bool?,
       message: json['message'] as String?,
       error: json['error'] as bool?,
-      data: json['data'] == null
-          ? null
-          : VerifyOtpData.fromJson(json['data'] as Map<String, dynamic>),
+      data:
+          json['data'] == null
+              ? null
+              : VerifyOtpData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$VerifyOtpResponseToJson(VerifyOtpResponse instance) =>

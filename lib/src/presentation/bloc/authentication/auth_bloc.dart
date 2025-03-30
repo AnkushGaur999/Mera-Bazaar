@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:mera_bazaar/src/config/di/service_locator.dart';
+import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/core/network/data_state.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/send_otp_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/verify_otp_use_case.dart';
@@ -36,6 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await verifyOtpUseCase.sendOtp(number: event.number, otp: event.otp);
 
     if (response is DataSuccess) {
+      getIt<LocalStorageManager>().setToken("uhdsi7823hew89hisid90jkds8sdm2u3h");
       emit(VerifyOtpSuccess(message: response.data!.message!));
     } else {
       emit(VerifyOtpError(message: response.exception!.message!));

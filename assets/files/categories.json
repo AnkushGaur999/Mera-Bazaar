@@ -1,0 +1,64 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "image_url": "https://amgglobaltrading.com/assets/images/electonic-banner.jpg",
+      "description": "All things electronic, from gadgets to appliances."
+    },
+    {
+      "id": 2,
+      "name": "Clothing",
+      "image_url": "https://assets.vogue.com/photos/6658aadb7a25d4f923427cb5/master/w_1600,c_limit/Collage.jpg",
+      "description": "Fashion for all styles and occasions."
+    },
+    {
+      "id": 3,
+      "name": "Books",
+      "image_url": "https://www.productplan.com/uploads/2017/05/books-for-product-managers.jpeg",
+      "description": "Dive into a world of stories and knowledge."
+    },
+    {
+      "id": 4,
+      "name": "Home",
+      "image_url": "https://m.media-amazon.com/images/I/71Koe4yu2WL._AC_UF1000,1000_QL80_.jpg",
+      "description": "Everything you need to create a beautiful home and garden."
+    },
+    {
+      "id": 5,
+      "name": "Sports",
+      "image_url": "https://sellerinteractive.com/wp-content/uploads/2022/04/amazon-sports-and-outdoors-best-sellers.jpeg",
+      "description": "Gear up for your next adventure or workout."
+    },
+    {
+      "id": 6,
+      "name": "Toys",
+      "image_url": "https://ubuykw.s3.amazonaws.com/category-pages/sub_category-174020268999.jpg",
+      "description": "Fun for all ages, from board games to action figures."
+    },
+    {
+      "id": 7,
+      "name": "Beauty",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2022/8/XN/NF/SB/157564005/beauty-personal-care.jpg",
+      "description": "Take care of yourself with our beauty and personal care products."
+    },
+    {
+      "id": 8,
+      "name": "Automotive",
+      "image_url": "https://5.imimg.com/data5/SD/GO/MY-37501971/car-accessories-1000x1000.jpg",
+      "description": "Parts, accessories, and tools for your car."
+    },
+    {
+      "id": 9,
+      "name": "Food",
+      "image_url": "https://5.imimg.com/data5/HE/RB/GLADMIN-6817178/food-and-beverage.png",
+      "description": "Treat yourself to delicious foods and drinks."
+    },
+    {
+      "id": 10,
+      "name": "All",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2022/11/YI/UU/BX/48023543/whatsapp-image-2022-11-05-at-5-03-05-pm-8--500x500.jpeg",
+      "description": "Everything you need to stay organized and productive."
+    }
+  ]
+}

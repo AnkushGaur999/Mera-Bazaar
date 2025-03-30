@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/src/config/route/app_routes.dart';
 import 'package:mera_bazaar/src/core/extensions/context_extensions.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:mera_bazaar/src/presentation/pages/login/widget/mobile_text_field.dart';
-import 'package:mera_bazaar/src/presentation/pages/otp/opt_screen.dart';
 import 'package:mera_bazaar/src/presentation/widets/loading_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _controller = TextEditingController();
 
@@ -59,7 +66,7 @@ class LoginScreen extends StatelessWidget {
           MobileTextField(
             controller: _controller,
             onChange: (String? value) {
-              if(value?.length == 10){
+              if (value?.length == 10) {
                 context.unFocus();
               }
             },
@@ -96,8 +103,7 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ));
 
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OtpScreen()));
+              context.pushNamed(AppRoutes.otp);
             } else if (state is SendOtpError) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
@@ -110,5 +116,11 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
