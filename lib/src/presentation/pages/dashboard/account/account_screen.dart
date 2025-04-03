@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/src/config/route/app_routes.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -7,11 +9,11 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: Text('Account'), elevation: 0),
+    //  backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(title: const Text('Account'), elevation: 0),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,9 +49,20 @@ class AccountScreen extends StatelessWidget {
               _buildListTile(Icons.person, 'Profile', () {}),
               _buildListTile(Icons.shopping_bag, 'Orders', () {}),
               _buildListTile(Icons.favorite, 'Wishlist', () {}),
-              _buildListTile(Icons.notifications, 'Notifications', () {}),
+              _buildListTile(
+                Icons.notifications,
+                'Notifications',
+                () => context.pushNamed(AppRoutes.notification),
+              ),
               _buildListTile(Icons.language, 'Language', () {}),
+
               _buildListTile(Icons.location_on, 'Shipping Address', () {}),
+
+              _buildListTile(
+                Icons.color_lens_rounded,
+                'Theme',
+                () => context.pushNamed(AppRoutes.themeUpdate),
+              ),
 
               SizedBox(height: 10.h),
 
@@ -82,23 +95,22 @@ class AccountScreen extends StatelessWidget {
   }
 
   Widget _buildListTile(IconData icon, String title, VoidCallback onTap) {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: InkWell(
-        onTap: () {},
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Row(
           children: [
-            Icon(icon, color: Colors.black),
+            Icon(icon),
             SizedBox(width: 16.w),
-            Text(title, style: TextStyle(color: Colors.black, fontSize: 14.sp)),
+            Text(title, style: TextStyle( fontSize: 14.sp)),
             const Spacer(),
-            const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+            const Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),

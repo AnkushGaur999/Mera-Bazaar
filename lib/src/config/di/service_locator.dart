@@ -14,6 +14,7 @@ import 'package:mera_bazaar/src/domain/use_cases/auth/verify_otp_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/category/category_use_case.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/category/category_bloc.dart';
+import 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -79,4 +80,6 @@ Future<void> setupDependencies() async {
   getIt.registerFactory<CategoryBloc>(
     () => CategoryBloc(categoryUseCase: getIt<CategoryUseCase>()),
   );
+
+  getIt.registerSingleton(ThemeBloc());
 }

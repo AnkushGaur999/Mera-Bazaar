@@ -9,15 +9,15 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My Cart',),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Card(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:  12.0),
+                  child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -125,50 +125,50 @@ class CartScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-            const Divider(thickness: 1),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0,),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Subtotal: ₹1497',
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
-                  Text(
-                    'Delivery Charges: ₹50',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
-                  ),
-                  Text(
-                    'Discount: -₹250',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.green),
-                  ),
-                  const Divider(),
-                  Text(
-                    'Total: ₹1297',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12.h),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+          ),
+          const Divider(thickness: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Subtotal: ₹1497',
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+                Text(
+                  'Delivery Charges: ₹50',
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
+                ),
+                Text(
+                  'Discount: -₹250',
+                  style: TextStyle(fontSize: 12.sp, color: Colors.green),
+                ),
+                const Divider(),
+                Text(
+                  'Total: ₹1297',
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 12.h),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text('Checkout', style: TextStyle(fontSize: 14.sp, color: Colors.white)),
                   ),
-                ],
-              ),
+                  child: Text('Checkout', style: TextStyle(fontSize: 14.sp, color: Colors.white)),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

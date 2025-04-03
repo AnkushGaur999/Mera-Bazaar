@@ -9,6 +9,8 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.da
 import 'package:mera_bazaar/src/presentation/pages/dashboard/notification/notification_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/login/login_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/otp/opt_screen.dart';
+import 'package:mera_bazaar/src/presentation/pages/product/product_details_page.dart';
+import 'package:mera_bazaar/src/presentation/pages/theme_update_page.dart';
 import '../../presentation/pages/splash/splash_screen.dart';
 
 class AppRoutes {
@@ -22,6 +24,8 @@ class AppRoutes {
   static const String notification = 'notification';
   static const String cart = 'cart';
   static const String category = 'category';
+  static const String productDetails = 'product_details';
+  static const String themeUpdate = 'theme_update';
 
   static const String _splash = '/';
   static const String _login = '/login';
@@ -33,6 +37,8 @@ class AppRoutes {
   static const String _notification = '/notification';
   static const String _cart = '/cart';
   static const String _category = '/category';
+  static const String _productDetails = '/product_details';
+  static const String _themeUpdate = '/theme_update';
 
   static final GoRouter router = GoRouter(
     initialLocation: _splash,
@@ -72,11 +78,35 @@ class AppRoutes {
         path: _category,
         builder: (context, state) => const CategoryScreen(),
       ),
+
+      GoRoute(
+        name: productDetails,
+        path: _productDetails,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return ProductDetailsScreen(
+            imageUrl: data["imageUrl"]!,
+            title: data["title"]!,
+            price: data["price"]!,
+            rating: data["rating"]!,
+            description: data["description"],
+          );
+        },
+      ),
+
       GoRoute(
         name: cart,
         path: _cart,
         builder: (context, state) => const CartScreen(),
       ),
+
+      GoRoute(
+        name: themeUpdate,
+        path: _themeUpdate,
+        builder: (context, state) => const ThemeUpdatePage(),
+      ),
+
       GoRoute(
         name: notification,
         path: _notification,
