@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/src/config/di/service_locator.dart';
 import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
+import 'package:mera_bazaar/src/domain/entities/product/product_entity.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/account/account_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/cart_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_screen.dart';
@@ -83,15 +84,8 @@ class AppRoutes {
         name: productDetails,
         path: _productDetails,
         builder: (context, state) {
-          final data = state.extra as Map<String, dynamic>;
-
-          return ProductDetailsScreen(
-            imageUrl: data["imageUrl"]!,
-            title: data["title"]!,
-            price: data["price"]!,
-            rating: data["rating"]!,
-            description: data["description"],
-          );
+          final data = state.extra as ProductEntity;
+          return ProductDetailsScreen(productEntity: data);
         },
       ),
 

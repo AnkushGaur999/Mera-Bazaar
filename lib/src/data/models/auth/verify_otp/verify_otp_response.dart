@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mera_bazaar/src/domain/entities/verify_otp_response_entity.dart';
+import 'package:mera_bazaar/src/domain/entities/auth/verify_otp_response_entity.dart';
 
 part 'verify_otp_response.g.dart';
 

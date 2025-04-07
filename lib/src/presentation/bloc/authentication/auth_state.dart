@@ -52,3 +52,26 @@ class VerifyOtpError extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+class GetUserProfileLoading extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetUserProfileSuccess extends AuthState {
+  final GetUserProfileEntity userData;
+
+  GetUserProfileSuccess({required this.userData});
+
+  @override
+  List<Object?> get props => [userData];
+}
+
+class GetUserProfileError extends AuthState {
+  final String message;
+
+  GetUserProfileError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

@@ -20,3 +20,12 @@ class VerifyOtpEvent extends AuthEvent {
   @override
   List<Object?> get props => [number, otp];
 }
+
+class GetUserProfileEvent extends AuthEvent {
+  final String token;
+
+  GetUserProfileEvent({required this.token});
+
+  @override
+  List<Object?> get props => [token];
+}

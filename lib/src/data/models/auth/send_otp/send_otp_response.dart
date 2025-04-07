@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mera_bazaar/src/domain/entities/send_otp_response_entity.dart';
+import 'package:mera_bazaar/src/domain/entities/auth/send_otp_response_entity.dart';
 
 part 'send_otp_response.g.dart';
 

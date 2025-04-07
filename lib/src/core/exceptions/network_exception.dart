@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mera_bazaar/src/core/network/model/network_error_model.dart';
 
-
 ///
 /// This class extends [Equatable] and implements [Exception].
 /// It contains a [message] and a [statusCode] property.
@@ -63,13 +62,24 @@ class NetworkException extends Equatable implements Exception {
         break;
 
       case DioExceptionType.badResponse:
-        final model = NetworkErrorModel.fromJson(dioException.response?.data as Map<String, dynamic>);
+        final model = NetworkErrorModel.fromJson(
+          dioException.response?.data as Map<String, dynamic>,
+        );
         message = model.statusMessage ?? 'Unexpected bad response';
         break;
 
       case DioExceptionType.unknown:
         message = 'Unexpected error occurred';
         break;
+    }
+  }
+
+  NetworkException.fromException(Object e) {
+    statusCode = 500;
+    if (e is FormatException) {
+      message = 'Unexpected error occurred';
+    } else {
+      message = "Something went wrong.\nPlease try again later.";
     }
   }
 

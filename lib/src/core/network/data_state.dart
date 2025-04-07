@@ -1,17 +1,17 @@
-import 'package:dio/dio.dart';
+import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
 
 sealed class DataState<T> {
   final T? data;
-  final DioException? exception;
+  final NetworkException? exception;
 
   DataState({this.data, this.exception});
 }
 
 class DataSuccess<T> extends DataState<T> {
-  DataSuccess({required T data}) : super( data: data);
+  DataSuccess({required T data}) : super(data: data);
 }
 
 class DataError<T> extends DataState<T> {
-  DataError({ required DioException exception})
-      : super(exception: exception);
+  DataError({required NetworkException exception})
+    : super(exception: exception);
 }

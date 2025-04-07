@@ -1,15 +1,20 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/src/config/route/app_routes.dart';
+import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthBloc>().add(
+      GetUserProfileEvent(token: "YKaxiSO1NagMEQA7jN5t"),
+    );
+
     return Scaffold(
-    //  backgroundColor: Colors.grey.shade100,
       appBar: AppBar(title: const Text('Account'), elevation: 0),
       body: SingleChildScrollView(
         child: Padding(
@@ -20,20 +25,41 @@ class AccountScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                    const CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(
-                        'https://media.licdn.com/dms/image/v2/C5103AQFtR8T9MiVxiA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1581317796036?e=1749081600&v=beta&t=sAEPtNJ-V21UI2blGaF3pglAFwTxwouk1omQVMwCFqc',
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
                     Center(
-                      child: Text(
-                        'Ankush Gaur',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: BlocBuilder<AuthBloc, AuthState>(
+                        buildWhen:
+                            (previous, current) =>
+                                current is GetUserProfileLoading ||
+                                current is GetUserProfileSuccess ||
+                                current is GetUserProfileError,
+                        builder: (context, state) {
+
+                          if (state is GetUserProfileLoading) {
+                            return SizedBox(height: 100.h);
+                          }
+
+                          if (state is GetUserProfileSuccess) {
+                            return Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: NetworkImage(
+                                    state.userData.imageUrl!,
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  state.userData.name!,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
                     ),
                   ],
@@ -108,7 +134,7 @@ class AccountScreen extends StatelessWidget {
           children: [
             Icon(icon),
             SizedBox(width: 16.w),
-            Text(title, style: TextStyle( fontSize: 14.sp)),
+            Text(title, style: TextStyle(fontSize: 14.sp)),
             const Spacer(),
             const Icon(Icons.arrow_forward_ios),
           ],

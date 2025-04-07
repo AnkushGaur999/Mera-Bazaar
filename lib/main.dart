@@ -1,25 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mera_bazaar/src/config/route/app_routes.dart';
-import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
-import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
-import 'package:mera_bazaar/src/presentation/bloc/category/category_bloc.dart';
-import 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
-import 'src/config/di/service_locator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'main_export.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await LocalStorageManager.init();
+  await setupDependencies();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  await LocalStorageManager.init();
-  await setupDependencies();
   runApp(const MyApp());
 }
 
@@ -36,6 +26,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<CategoryBloc>()),
 
         BlocProvider(create: (context) => getIt<ThemeBloc>()),
+
+        BlocProvider(create: (context) => getIt<HomeBloc>()),
+
+        BlocProvider(create: (context) => getIt<ProductBloc>()),
+
+        BlocProvider(create: (context) => getIt<CartBloc>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),
@@ -45,12 +41,12 @@ class MyApp extends StatelessWidget {
           return BlocBuilder<ThemeBloc, ThemeLoad>(
             builder: (context, state) {
               return MaterialApp.router(
-                title: 'Flutter Demo',
+                title: 'Mera Bazaar',
                 theme: state.themeData,
                 routerConfig: AppRoutes.router,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
-                locale: Locale("en"),
+                locale: const Locale("en"),
               );
             },
           );

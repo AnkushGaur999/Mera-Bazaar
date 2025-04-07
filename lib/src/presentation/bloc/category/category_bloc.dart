@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mera_bazaar/src/core/network/data_state.dart';
 import 'package:mera_bazaar/src/domain/entities/category/category_entity.dart';
 import 'package:mera_bazaar/src/domain/use_cases/category/category_use_case.dart';
 
@@ -21,8 +22,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   ) async {
     emit(CategoryLoading());
 
-    final categories = await categoryUseCase.call();
+    final response = await categoryUseCase.call();
 
-    emit(CategoryLoaded(categories: categories));
+    if (response is DataSuccess) {
+      emit(CategoryLoaded(categories: response.data!));
+    } else {
+      emit(CategoryFailed(message: response.exception!.message));
+    }
   }
 }

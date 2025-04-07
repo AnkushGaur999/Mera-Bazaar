@@ -1,12 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mera_bazaar/src/presentation/bloc/category/category_bloc.dart';
+import 'package:mera_bazaar/main_export.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/widgets/app_search_bar.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/widgets/carousel_item.dart';
-import 'package:mera_bazaar/src/presentation/pages/dashboard/home/widgets/item_category.dart';
+import 'package:mera_bazaar/src/presentation/pages/dashboard/category/widgets/item_category.dart';
 import 'package:mera_bazaar/src/presentation/pages/product/widgets/product_item.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +21,14 @@ class _HomeScreen extends State<HomeScreen> {
   int _current = 0;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<CategoryBloc>().add(GetCategoriesEvent());
+    context.read<HomeBloc>().add(GetCarouselsEvent());
+    context.read<ProductBloc>().add(GetProductsEvent(type: "famous"));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -37,57 +43,115 @@ class _HomeScreen extends State<HomeScreen> {
 
               SizedBox(height: 16.h),
 
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 160.h,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  viewportFraction: 1,
-                  aspectRatio: 16 / 9,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
-                ),
-                items:
-                [1, 2, 3, 4, 5].map((item) => const CarouselItem()).toList(),
-              ),
+              BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  if (state is GetCarouselLoading) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 280.w,
+                        height: 160.h,
+                        margin: EdgeInsets.all(8.0.sp),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:
-                [1, 2, 3, 4, 5].map((e) {
-                  int index = [1, 2, 3, 4, 5].indexOf(e);
-                  return Container(
-                    width: 8,
-                    height: 8,
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color:
-                      _current == index
-                          ? const Color.fromRGBO(0, 0, 0, 0.9)
-                          : const Color.fromRGBO(0, 0, 0, 0.4),
-                    ),
-                  );
-                }).toList(),
+                  if (state is GetCarouselLoaded) {
+                    return Column(
+                      children: [
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 160.h,
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enableInfiniteScroll: true,
+                            autoPlayAnimationDuration: const Duration(
+                              milliseconds: 800,
+                            ),
+                            viewportFraction: 1,
+                            aspectRatio: 16 / 9,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _current = index;
+                              });
+                            },
+                          ),
+                          items:
+                          state.carousels
+                              .map(
+                                (item) =>
+                                CarouselItem(imageUrl: item.imageUrl!),
+                          )
+                              .toList(),
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:
+                          state.carousels.map((e) {
+                            int index = state.carousels.indexOf(e);
+                            return Container(
+                              width: 8,
+                              height: 8,
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:
+                                _current == index
+                                    ? const Color.fromRGBO(0, 0, 0, 0.9)
+                                    : const Color.fromRGBO(
+                                  0,
+                                  0,
+                                  0,
+                                  0.4,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return SizedBox(height: 100.h);
+                },
               ),
 
               SizedBox(height: 20.h),
 
               BlocBuilder<CategoryBloc, CategoryState>(
-                bloc: BlocProvider.of<CategoryBloc>(context)
-                  ..add(GetCategoriesEvent()),
                 builder: (context, state) {
                   if (state is CategoryLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return SizedBox(
+                      height:
+                      MediaQuery
+                          .of(context)
+                          .orientation ==
+                          Orientation.portrait
+                          ? 80.h
+                          : 60.w,
+                      child: ListView.builder(
+                        itemCount: 10,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: false,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return const ItemCategory(
+                            categoryEntity: null,
+                            isLoading: true,
+                          );
+                        },
+                      ),
+                    );
                   } else if (state is CategoryFailed) {
                     return Center(child: Text(state.message));
                   } else if (state is CategoryLoaded) {
@@ -102,11 +166,12 @@ class _HomeScreen extends State<HomeScreen> {
                       child: ListView.builder(
                         itemCount: state.categories.length,
                         scrollDirection: Axis.horizontal,
-                        shrinkWrap: false,
+                        shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return ItemCategory(
                             categoryEntity: state.categories[index],
+                            isLoading: false,
                           );
                         },
                       ),
@@ -116,109 +181,89 @@ class _HomeScreen extends State<HomeScreen> {
                 },
               ),
 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              BlocBuilder<ProductBloc, ProductState>(
+                builder: (context, state) {
+                  if (state is GetProductsLoading) {
+                    return SizedBox(
+                      height: 110.h,
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        children: [1,2,3,4,5].map((e)=> Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.w,
+                            vertical: 10.h,
+                          ),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width / 3.2.w,
+                              height: 100.h,
+                              margin: EdgeInsets.all(2.0.sp),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: Colors.white,
+                              ),
+                            ),),
+                        )).toList(),
+                      ),
+                    );
+                  }
 
-                  children: [
-                    const Text(
-                      "Popular Products",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(onPressed: () {}, child: const Text("View All")),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 110.h,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  children: [...List.generate(10, (index) =>
-                      const AspectRatio(
-                        aspectRatio: 1.0,
-                        child: ProductItem(
-                          imageUrl: "https://m.media-amazon.com/images/I/71Koe4yu2WL._AC_UF1000,1000_QL80_.jpg",
-                          title: "Electronics",
-                          price: 100.0,
-                          rating: 4.5,
+                  if (state is GetProductsLoaded) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.w,
+                            vertical: 10.h,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Famous Products",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text("View All"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ))
-                  ],
-                ),
-              ),
 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        SizedBox(
+                          height: 110.h,
+                          child: ListView(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            children:
+                            state.products
+                                .map(
+                                  (product) =>
+                                  AspectRatio(
+                                    aspectRatio: 1.0,
+                                    child: ProductItem(
+                                      productEntity: product,
+                                    ),
+                                  ),
+                            )
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
 
-                  children: [
-                    const Text(
-                      "New Arrival",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(onPressed: () {}, child: const Text("View All")),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 110.h,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  children: [...List.generate(10, (index) =>
-                  const AspectRatio(
-                    aspectRatio: 1.0,
-                    child: ProductItem(
-                      imageUrl: "https://m.media-amazon.com/images/I/71Koe4yu2WL._AC_UF1000,1000_QL80_.jpg",
-                      title: "Electronics",
-                      price: 100.0,
-                      rating: 4.5,
-                    ),
-                  ))
-                  ],
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    const Text(
-                      "Recommended Products",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(onPressed: () {}, child: const Text("View All")),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 110.h,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  children: [...List.generate(10, (index) =>
-                  const AspectRatio(
-                    aspectRatio: 1.0,
-                    child: ProductItem(
-                      imageUrl: "https://m.media-amazon.com/images/I/71Koe4yu2WL._AC_UF1000,1000_QL80_.jpg",
-                      title: "Electronics",
-                      price: 100.0,
-                      rating: 4.5,
-                    ),
-                  ))
-                  ],
-                ),
+                  return const SizedBox();
+                },
               ),
 
             ],
