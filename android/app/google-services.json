@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "101644876939",
+    "project_id": "mera-bazaar-17b93",
+    "storage_bucket": "mera-bazaar-17b93.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101644876939:android:cd61904bb3315db1c4e88e",
+        "android_client_info": {
+          "package_name": "com.example.mera_bazaar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0X1Qqx4z0tVZD6aojlDIASZVvhSvHwOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

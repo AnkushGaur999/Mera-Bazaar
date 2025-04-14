@@ -7,6 +7,7 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/account/account_scr
 import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/cart_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -55,7 +56,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           height: 90,
           shape: const CircularNotchedRectangle(),
           notchMargin: 5.0,
-          color: Colors.white,
           surfaceTintColor: Colors.transparent,
           shadowColor: Colors.transparent,
           clipBehavior: Clip.antiAlias,
@@ -63,27 +63,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
             height: kBottomNavigationBarHeight,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.white,
               selectedLabelStyle: TextStyle(
                   color: Colors.blue.shade900,
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
-                  label: 'Home',
+              items: <BottomNavigationBarItem>[
+                 BottomNavigationBarItem(
+                  icon: const Icon(Icons.home_outlined),
+                  label: AppLocalizations.of(context).home,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.category_sharp),
-                  label: 'Category',
+                  icon: const Icon(Icons.category_sharp),
+                  label: AppLocalizations.of(context).category,
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'Cart',
+                 BottomNavigationBarItem(
+                  icon: const Icon(Icons.shopping_cart),
+                  label: AppLocalizations.of(context).cart,
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle),
-                  label: 'Account',
+                 BottomNavigationBarItem(
+                  icon: const Icon(Icons.account_circle),
+                  label: AppLocalizations.of(context).account,
                 ),
               ],
               currentIndex: _selectedIndex,

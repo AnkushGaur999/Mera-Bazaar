@@ -1,0 +1,262 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "category_id": 1,
+      "title": "Smart Fitness Watch Pro",
+      "image_url": "https://cdn.shopify.com/s/files/1/0405/8737/6690/products/Smartwatch.jpg",
+      "price": 149.99,
+      "rating": 4.7,
+      "manufacturer": "TechGear Inc.",
+      "warranty": "1 Year",
+      "features": [
+        "Heart rate and sleep monitoring",
+        "GPS tracking",
+        "7-day battery life",
+        "Waterproof up to 50 meters",
+        "Customizable watch faces"
+      ],
+      "description": "Stay connected and track your fitness goals with the Smart Fitness Watch Pro, your ultimate workout companion."
+    },
+    {
+      "id": 6,
+      "category_id": 1,
+      "title": "Wireless Bluetooth Headphones",
+      "image_url": "https://example.com/images/headphones.jpg",
+      "price": 89.99,
+      "rating": 4.6,
+      "manufacturer": "SoundTech",
+      "warranty": "1 Year",
+      "features": [
+        "Noise cancellation",
+        "High-definition sound",
+        "Comfortable ear cushions",
+        "20-hour battery life",
+        "Voice assistant support"
+      ],
+      "description": "Experience immersive sound quality with lightweight and durable Bluetooth headphones."
+    },
+    {
+      "id": 7,
+      "category_id": 1,
+      "title": "Smart Home Security Camera",
+      "image_url": "https://example.com/images/security_camera.jpg",
+      "price": 129.99,
+      "rating": 4.7,
+      "manufacturer": "SecureTech",
+      "warranty": "2 Years",
+      "features": [
+        "1080p HD recording",
+        "Motion detection",
+        "Night vision",
+        "Remote monitoring via app",
+        "Cloud storage support"
+      ],
+      "description": "Keep your home secure with a high-resolution camera that offers real-time monitoring."
+    },
+    {
+      "id": 8,
+      "category_id": 1,
+      "title": "4K Ultra HD Smart TV",
+      "image_url": "https://example.com/images/smart_tv.jpg",
+      "price": 699.99,
+      "rating": 4.8,
+      "manufacturer": "Visionary Electronics",
+      "warranty": "3 Years",
+      "features": [
+        "Ultra HD 4K resolution",
+        "Built-in streaming apps",
+        "Voice control",
+        "HDR support",
+        "Wide color gamut"
+      ],
+      "description": "Upgrade your home entertainment with vibrant colors and immersive sound."
+    },
+    {
+      "id": 9,
+      "category_id": 1,
+      "title": "Smart Robot Vacuum Cleaner",
+      "image_url": "https://example.com/images/robot_vacuum.jpg",
+      "price": 249.99,
+      "rating": 4.6,
+      "manufacturer": "CleanBot",
+      "warranty": "2 Years",
+      "features": [
+        "Auto-navigation system",
+        "Multi-surface cleaning",
+        "Wi-Fi connectivity",
+        "Self-charging",
+        "Voice command compatibility"
+      ],
+      "description": "Keep your floors spotless with minimal effort using the Smart Robot Vacuum Cleaner."
+    },
+
+    {
+      "id": 1,
+      "category_id": 1,
+      "title": "Smart Fitness Watch Pro",
+      "image_url": "https://cdn.shopify.com/s/files/1/0405/8737/6690/products/Smartwatch.jpg",
+      "price": 149.99,
+      "rating": 4.7,
+      "manufacturer": "TechGear Inc.",
+      "warranty": "1 Year",
+      "features": [
+        "Heart rate and sleep monitoring",
+        "GPS tracking",
+        "7-day battery life",
+        "Waterproof up to 50 meters",
+        "Customizable watch faces"
+      ],
+      "description": "Stay connected and track your fitness goals with the Smart Fitness Watch Pro, your ultimate workout companion."
+    },
+    {
+      "id": 21,
+      "category_id": 2,
+      "title": "Classic Denim Jacket",
+      "image_url": "https://example.com/images/denim_jacket.jpg",
+      "price": 59.99,
+      "rating": 4.5,
+      "brand": "Urban Outfitters",
+      "size": "M, L, XL",
+      "color": "Blue",
+      "material": "100% Cotton",
+      "description": "A timeless denim jacket that never goes out of style, perfect for layering."
+    },
+    {
+      "id": 22,
+      "category_id": 2,
+      "title": "Graphic T-Shirt",
+      "image_url": "https://example.com/images/graphic_tee.jpg",
+      "price": 19.99,
+      "rating": 4.2,
+      "brand": "HypeWear",
+      "size": "S, M, L, XL",
+      "color": "White",
+      "material": "Cotton Blend",
+      "description": "Casual graphic tee featuring a bold print, ideal for everyday wear."
+    },
+    {
+      "id": 23,
+      "category_id": 2,
+      "title": "Formal Blazer",
+      "image_url": "https://example.com/images/blazer.jpg",
+      "price": 99.99,
+      "rating": 4.8,
+      "brand": "Elegance",
+      "size": "M, L, XL, XXL",
+      "color": "Black",
+      "material": "Wool Blend",
+      "description": "Look sharp with this classic formal blazer, suitable for business meetings and events."
+    },
+    {
+      "id": 24,
+      "category_id": 2,
+      "title": "Summer Maxi Dress",
+      "image_url": "https://example.com/images/maxi_dress.jpg",
+      "price": 39.99,
+      "rating": 4.4,
+      "brand": "Chic Couture",
+      "size": "S, M, L",
+      "color": "Floral",
+      "material": "Polyester",
+      "description": "Flowy and comfortable, this maxi dress is perfect for summer days."
+    },
+    {
+      "id": 25,
+      "category_id": 2,
+      "title": "Athletic Running Shorts",
+      "image_url": "https://example.com/images/running_shorts.jpg",
+      "price": 24.99,
+      "rating": 4.7,
+      "brand": "ActiveWear",
+      "size": "M, L, XL",
+      "color": "Black/Gray",
+      "material": "Polyester",
+      "description": "Stay comfortable and dry during your workouts with these breathable running shorts."
+    },
+
+    {
+      "id": 1,
+      "category_id": 1,
+      "title": "Smart Fitness Watch Pro",
+      "image_url": "https://cdn.shopify.com/s/files/1/0405/8737/6690/products/Smartwatch.jpg",
+      "price": 149.99,
+      "rating": 4.7,
+      "manufacturer": "TechGear Inc.",
+      "warranty": "1 Year",
+      "features": [
+        "Heart rate and sleep monitoring",
+        "GPS tracking",
+        "7-day battery life",
+        "Waterproof up to 50 meters",
+        "Customizable watch faces"
+      ],
+      "description": "Stay connected and track your fitness goals with the Smart Fitness Watch Pro, your ultimate workout companion."
+    },
+    {
+      "id": 41,
+      "category_id": 3,
+      "title": "The Art of War by Sun Tzu",
+      "image_url": "https://example.com/images/art_of_war.jpg",
+      "price": 9.99,
+      "rating": 4.6,
+      "author": "Sun Tzu",
+      "pages": 200,
+      "genre": "Strategy",
+      "publisher": "Penguin Classics",
+      "description": "An ancient Chinese military treatise that teaches strategy and tactics."
+    },
+    {
+      "id": 42,
+      "category_id": 3,
+      "title": "1984 by George Orwell",
+      "image_url": "https://example.com/images/1984.jpg",
+      "price": 12.99,
+      "rating": 4.9,
+      "author": "George Orwell",
+      "pages": 328,
+      "genre": "Dystopian Fiction",
+      "publisher": "Secker & Warburg",
+      "description": "A dystopian novel set in a totalitarian regime, depicting the dangers of total control."
+    },
+    {
+      "id": 43,
+      "category_id": 3,
+      "title": "Atomic Habits by James Clear",
+      "image_url": "https://example.com/images/atomic_habits.jpg",
+      "price": 16.99,
+      "rating": 4.8,
+      "author": "James Clear",
+      "pages": 320,
+      "genre": "Self-help",
+      "publisher": "Avery",
+      "description": "Learn practical strategies to build good habits and break bad ones."
+    },
+    {
+      "id": 44,
+      "category_id": 3,
+      "title": "To Kill a Mockingbird by Harper Lee",
+      "image_url": "https://example.com/images/to_kill_a_mockingbird.jpg",
+      "price": 14.99,
+      "rating": 4.9,
+      "author": "Harper Lee",
+      "pages": 281,
+      "genre": "Classic Fiction",
+      "publisher": "J.B. Lippincott & Co.",
+      "description": "A powerful novel about racial injustice in the American South."
+    },
+    {
+      "id": 45,
+      "category_id": 3,
+      "title": "The Alchemist by Paulo Coelho",
+      "image_url": "https://example.com/images/the_alchemist.jpg",
+      "price": 11.99,
+      "rating": 4.7,
+      "author": "Paulo Coelho",
+      "pages": 208,
+      "genre": "Adventure, Fantasy",
+      "publisher": "HarperOne",
+      "description": "An inspiring story about following your dreams and discovering your destiny."
+    }
+  ]
+}

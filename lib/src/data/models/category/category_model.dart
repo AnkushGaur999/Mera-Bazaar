@@ -6,7 +6,7 @@ part 'category_model.g.dart';
 @JsonSerializable()
 class CategoryModel {
   @JsonKey(name: "id")
-  int? id;
+  String? id;
 
   @JsonKey(name: "name")
   String? name;
