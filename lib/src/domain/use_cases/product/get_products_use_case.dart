@@ -8,8 +8,8 @@ class GetProductsUseCase{
 
   GetProductsUseCase({required this.productRepository});
 
-  Future<DataState<List<ProductEntity>>> call({required String type}) async{
-    return await productRepository.getProducts(type: type);
+  Future<DataState<List<ProductEntity>>> call({required String categoryId}) async{
+    return await productRepository.getProducts(categoryId: categoryId);
   }
 
 }

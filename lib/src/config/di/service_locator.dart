@@ -1,3 +1,16 @@
+/// Dependency Injection configuration using GetIt.
+///
+/// This file sets up the dependency injection container for the application using GetIt.
+/// It registers all the necessary dependencies including:
+/// - Singletons (services that should have only one instance)
+/// - Data Sources (remote data providers)
+/// - Repositories (data access layer)
+/// - Use Cases (business logic)
+/// - BLoCs (state management)
+///
+/// The setup follows clean architecture principles, ensuring proper separation of concerns
+/// and dependency flow from outer layers (data) to inner layers (domain).
+
 import 'package:get_it/get_it.dart';
 import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
@@ -5,6 +18,7 @@ import 'package:mera_bazaar/src/data/repositories/authentication/authentication_
 import 'package:mera_bazaar/src/data/repositories/cart/cart_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/category/category_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/home/home_repository_impl.dart';
+import 'package:mera_bazaar/src/data/repositories/order/order_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/product/product_repository_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source_impl.dart';
@@ -14,12 +28,15 @@ import 'package:mera_bazaar/src/data/source/remote/category/category_data_source
 import 'package:mera_bazaar/src/data/source/remote/category/category_data_source_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/home/home_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/home/home_data_source_impl.dart';
+import 'package:mera_bazaar/src/data/source/remote/order/order_data_source.dart';
+import 'package:mera_bazaar/src/data/source/remote/order/order_data_source_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/product/product_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/product/product_data_source_impl.dart';
 import 'package:mera_bazaar/src/domain/repositories/authentication_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/cart_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/category_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/home_repository.dart';
+import 'package:mera_bazaar/src/domain/repositories/order_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/product_repository.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/get_user_profile_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/send_otp_use_case.dart';
@@ -30,16 +47,30 @@ import 'package:mera_bazaar/src/domain/use_cases/cart/get_cart_item_use_case.dar
 import 'package:mera_bazaar/src/domain/use_cases/cart/update_cart_item_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/category/category_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/home/get_carousel_use_case.dart';
+import 'package:mera_bazaar/src/domain/use_cases/order/get_orders_history_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/product/get_products_use_case.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/cart/cart_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/category/category_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/home/home_bloc.dart';
+import 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/product/product_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
 
+/// Global instance of GetIt for dependency injection
 GetIt getIt = GetIt.instance;
 
+/// Sets up all dependencies for the application.
+///
+/// This function registers all dependencies in the following order:
+/// 1. Singletons (services that should have only one instance)
+/// 2. Data Sources (remote data providers)
+/// 3. Repositories (data access layer)
+/// 4. Use Cases (business logic)
+/// 5. BLoCs (state management)
+///
+/// The registration follows clean architecture principles, ensuring proper
+/// dependency flow from outer layers to inner layers.
 Future<void> setupDependencies() async {
   ///
   /// Register Singleton Instance
@@ -75,6 +106,10 @@ Future<void> setupDependencies() async {
     () => CartDataSourceImpl(dioClient: getIt<DioClient>()),
   );
 
+  getIt.registerFactory<OrderDataSource>(
+    () => OrderDataSourceImpl(dioClient: getIt<DioClient>()),
+  );
+
   ///
   /// Register Repositories
   ///
@@ -98,6 +133,10 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<CartRepository>(
     () => CartRepositoryImpl(cartDataSource: getIt<CartDataSource>()),
+  );
+
+  getIt.registerFactory<OrderRepository>(
+    () => OrderRepositoryImpl(orderDataSource: getIt<OrderDataSource>()),
   );
 
   ///
@@ -150,6 +189,10 @@ Future<void> setupDependencies() async {
     () => UpdateCartItemUseCase(repository: getIt<CartRepository>()),
   );
 
+  getIt.registerFactory<GetOrdersHistoryUseCase>(
+    () => GetOrdersHistoryUseCase(repository: getIt<OrderRepository>()),
+  );
+
   ///
   /// Register Blocs
   ///
@@ -181,5 +224,9 @@ Future<void> setupDependencies() async {
       deleteCartItemUseCase: getIt<DeleteCartItemUseCase>(),
       updateCartItemUseCase: getIt<UpdateCartItemUseCase>(),
     ),
+  );
+
+  getIt.registerFactory<OrderBloc>(
+    () => OrderBloc(getOrdersHistoryUseCase: getIt<GetOrdersHistoryUseCase>()),
   );
 }

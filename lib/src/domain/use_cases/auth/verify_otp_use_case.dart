@@ -7,7 +7,10 @@ class VerifyOtpUseCase {
 
   VerifyOtpUseCase({required this.authenticationRepository});
 
-  Future<DataState<VerifyOtpResponseEntity>> sendOtp({required String number, required String otp}) async {
+  Future<DataState<VerifyOtpResponseEntity>> sendOtp({
+    required String number,
+    required String otp,
+  }) async {
     return await authenticationRepository.verifyOTP(number: number, otp: otp);
   }
 }

@@ -17,7 +17,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   void _getProducts(GetProductsEvent event, Emitter<ProductState> emit) async {
     emit(GetProductsLoading());
-    final result = await getProductsUseCase.call(type: event.type);
+    final result = await getProductsUseCase.call(categoryId: event.categoryId);
     if (result is DataSuccess) {
       emit(GetProductsLoaded(products: result.data!));
     } else {

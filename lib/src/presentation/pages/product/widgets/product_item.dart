@@ -27,7 +27,7 @@ class ProductItem extends StatelessWidget {
                 top: Radius.circular(12),
               ),
               child: Image.network(
-                productEntity.imageUrl??"",
+                productEntity.imageUrl ?? "",
                 height: 54.h,
                 fit: BoxFit.cover,
                 width: double.infinity,
@@ -42,7 +42,7 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productEntity.name??"",
+                    productEntity.name ?? "",
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,

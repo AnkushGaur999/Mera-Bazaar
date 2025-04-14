@@ -1,3 +1,11 @@
+/// Authentication BLoC implementation.
+///
+/// This file defines the authentication BLoC, which manages the state of
+/// authentication-related operations in the application. It handles:
+/// - Sending OTP
+/// - Verifying OTP
+/// - Retrieving user profile
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mera_bazaar/src/config/di/service_locator.dart';
@@ -12,11 +20,31 @@ part 'auth_event.dart';
 
 part 'auth_state.dart';
 
+/// BLoC for managing authentication operations.
+///
+/// This class extends [Bloc] to manage the state of authentication operations.
+/// It handles events related to:
+/// - Sending OTP
+/// - Verifying OTP
+/// - Retrieving user profile
+///
+/// The BLoC uses use cases to perform the actual operations and emits
+/// appropriate states based on the results.
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  /// Use case for sending OTP
   final SendOtpUseCase sendOtpUseCase;
+
+  /// Use case for verifying OTP
   final VerifyOtpUseCase verifyOtpUseCase;
+
+  /// Use case for retrieving user profile
   final GetUserProfileUseCase userProfileUseCase;
 
+  /// Creates a new [AuthBloc] with the specified use cases.
+  ///
+  /// [sendOtpUseCase] - Use case for sending OTP
+  /// [verifyOtpUseCase] - Use case for verifying OTP
+  /// [userProfileUseCase] - Use case for retrieving user profile
   AuthBloc({
     required this.sendOtpUseCase,
     required this.verifyOtpUseCase,
@@ -27,6 +55,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GetUserProfileEvent>(_getUserProfile);
   }
 
+  /// Handles the [SendOtpEvent] event.
+  ///
+  /// This method is called when a [SendOtpEvent] is dispatched to the BLoC.
+  /// It emits a [SendOtpLoading] state, then calls the [sendOtpUseCase] to send the OTP.
+  /// Based on the result, it emits either a [SendOtpSuccess] or [SendOtpError] state.
+  ///
+  /// [event] - The event to handle
+  /// [emit] - The emitter to use for emitting states
   Future<void> _sendOtp(SendOtpEvent event, Emitter<AuthState> emit) async {
     emit(SendOtpLoading());
 
@@ -39,6 +75,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  /// Handles the [VerifyOtpEvent] event.
+  ///
+  /// This method is called when a [VerifyOtpEvent] is dispatched to the BLoC.
+  /// It emits a [VerifyOtpLoading] state, then calls the [verifyOtpUseCase] to verify the OTP.
+  /// If successful, it stores the authentication token in local storage.
+  /// Based on the result, it emits either a [VerifyOtpSuccess] or [VerifyOtpError] state.
+  ///
+  /// [event] - The event to handle
+  /// [emit] - The emitter to use for emitting states
   Future<void> _verifyOTP(VerifyOtpEvent event, Emitter<AuthState> emit) async {
     emit(VerifyOtpLoading());
     final response = await verifyOtpUseCase.sendOtp(
@@ -56,6 +101,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  /// Handles the [GetUserProfileEvent] event.
+  ///
+  /// This method is called when a [GetUserProfileEvent] is dispatched to the BLoC.
+  /// It emits a [GetUserProfileLoading] state, then calls the [userProfileUseCase] to get the user profile.
+  /// Based on the result, it emits either a [GetUserProfileSuccess] or [GetUserProfileError] state.
+  ///
+  /// [event] - The event to handle
+  /// [emit] - The emitter to use for emitting states
   Future<void> _getUserProfile(
     GetUserProfileEvent event,
     Emitter<AuthState> emit,

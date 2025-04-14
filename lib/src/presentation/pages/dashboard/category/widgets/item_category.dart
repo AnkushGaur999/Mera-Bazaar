@@ -8,12 +8,14 @@ class ItemCategory extends StatelessWidget {
   final CategoryEntity? categoryEntity;
   final bool isLoading;
   final VoidCallback? onTap;
+  final String? selectedId;
 
   const ItemCategory({
     super.key,
     required this.isLoading,
     this.categoryEntity,
     this.onTap,
+    this.selectedId,
   });
 
   @override
@@ -42,12 +44,25 @@ class ItemCategory extends StatelessWidget {
                       onTap: onTap,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
-                        child: CachedNetworkImage(
-                          imageUrl: categoryEntity!.imageUrl!,
-                          fit: BoxFit.cover,
-                          width: MediaQuery.sizeOf(context).width / 5.4.w,
-                          errorWidget:
-                              (context, url, error) => const Icon(Icons.error),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border:
+                                selectedId == categoryEntity!.id
+                                    ? Border.all(color: Colors.green, width: 3)
+                                    : null,
+                            // border color and width
+                            borderRadius: BorderRadius.circular(
+                              8.r,
+                            ), // must match ClipRRect radius
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: categoryEntity!.imageUrl!,
+                            fit: BoxFit.cover,
+                            width: MediaQuery.sizeOf(context).width / 5.4.w,
+                            errorWidget:
+                                (context, url, error) =>
+                                    const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     ),

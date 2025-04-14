@@ -73,7 +73,7 @@ class AccountScreen extends StatelessWidget {
               ),
 
               _buildListTile(Icons.person, 'Profile', () {}),
-              _buildListTile(Icons.shopping_bag, 'Orders', () {}),
+              _buildListTile(Icons.shopping_bag, 'Orders', () => context.pushNamed(AppRoutes.orderHistory)),
               _buildListTile(Icons.favorite, 'Wishlist', () {}),
               _buildListTile(
                 Icons.notifications,

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/main_export.dart';
 import 'package:mera_bazaar/src/domain/entities/cart/cart_entity.dart';
 import 'package:mera_bazaar/src/domain/entities/product/product_entity.dart';
@@ -28,6 +29,10 @@ class ProductDetailsScreen extends StatelessWidget {
                         height: 200.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                        errorBuilder:
+                            (context, error, stackTrace) =>
+                            Center(child: Icon(
+                                Icons.error_outline_rounded, size: 200.h)),
                       ),
                     ),
                     SizedBox(height: 16.h),
@@ -87,43 +92,50 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
             ),
 
-            BlocListener<CartBloc, CartState>(
-              listener: (context, state) {
-                if (state is AddToCartLoaded) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.message)));
-                }
+            BlocConsumer<CartBloc, CartState>(
+                listener: (context, state) {
+                  if (state is AddToCartLoaded) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                    context.pushNamed(AppRoutes.cart);
+                  }
 
-                if (state is AddToCartFailed) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.message)));
-                }
-              },
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(minimumSize: Size(240.w, 40.h)),
-                onPressed: () {
-                  final cartEntity = CartEntity(
-                    id: Random.secure().nextInt(10000),
-                    name: productEntity.name,
-                    imageUrl: productEntity.imageUrl,
-                    price: productEntity.price,
-                    quantity: 1,
-                    discount: productEntity.discount,
-                    rating: productEntity.rating,
-                    discountedPrice: productEntity.discountedPrice,
-                    originalPrice: productEntity.originalPrice,
-                    totalOriginalPrice: productEntity.originalPrice,
-                    totalDiscountedPrice: productEntity.discountedPrice,
-                  );
-
-                  context.read<CartBloc>().add(
-                    AddToCartEvent(cartEntity: cartEntity),
-                  );
+                  if (state is AddToCartFailed) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                  }
                 },
-                child: const Text("Add To Cart"),
-              ),
+                builder: (context, state) {
+                  if (state is AddToCartLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(240.w, 40.h)),
+                    onPressed: () {
+                      final cartEntity = CartEntity(
+                        id: Random.secure().nextInt(10000),
+                        name: productEntity.name,
+                        imageUrl: productEntity.imageUrl,
+                        price: productEntity.price,
+                        quantity: 1,
+                        discount: productEntity.discount,
+                        rating: productEntity.rating,
+                        discountedPrice: productEntity.discountedPrice,
+                        originalPrice: productEntity.originalPrice,
+                        totalOriginalPrice: productEntity.originalPrice,
+                        totalDiscountedPrice: productEntity.discountedPrice,
+                      );
+
+                      context.read<CartBloc>().add(
+                        AddToCartEvent(cartEntity: cartEntity),
+                      );
+                    },
+                    child: const Text("Add To Cart"),
+                  );
+                }
             ),
           ],
         ),
