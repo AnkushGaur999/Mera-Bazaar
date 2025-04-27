@@ -11,18 +11,22 @@ class OrderDataSourceImpl extends OrderDataSource {
 
   @override
   Future<List<OrderResponse>> getOrders() async {
-    final response =
-        await _fireStore
-            .collection("orders")
-            .where("user_id", isEqualTo: "YKaxiSO1NagMEQA7jN5t")
-            .get();
+    try {
+      final response =
+          await _fireStore
+              .collection("orders")
+              .where("user_id", isEqualTo: "YKaxiSO1NagMEQA7jN5t")
+              .get();
 
-    final List<OrderResponse> orderList = [];
+      final List<OrderResponse> orderList = [];
 
-    for (int i = 0; i < response.docs.length; i++) {
-      orderList.add(OrderResponse.fromJson(response.docs[i].data()));
+      for (int i = 0; i < response.docs.length; i++) {
+        orderList.add(OrderResponse.fromJson(response.docs[i].data()));
+      }
+
+      return orderList;
+    } catch (e) {
+      rethrow;
     }
-
-    return orderList;
   }
 }

@@ -5,7 +5,7 @@
 /// and returns a [DataState] containing either the OTP response or an error.
 import 'package:mera_bazaar/src/core/network/data_state.dart';
 import 'package:mera_bazaar/src/domain/entities/auth/send_otp_response_entity.dart';
-import 'package:mera_bazaar/src/domain/repositories/authentication_repository.dart';
+import 'package:mera_bazaar/src/domain/repositories/auth_repository.dart';
 
 /// A use case that handles sending OTP to a phone number.
 ///
@@ -15,11 +15,11 @@ import 'package:mera_bazaar/src/domain/repositories/authentication_repository.da
 /// 3. Returning a [DataState] to handle success and error cases
 class SendOtpUseCase {
   /// The authentication repository used to make the API call.
-  final AuthenticationRepository authenticationRepository;
+  final AuthRepository authenticationRepository;
 
   /// Creates a new instance of [SendOtpUseCase].
   ///
-  /// Requires an [AuthenticationRepository] to be provided for making the API call.
+  /// Requires an [AuthRepository] to be provided for making the API call.
   SendOtpUseCase({required this.authenticationRepository});
 
   /// Sends an OTP to the specified phone number.

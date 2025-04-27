@@ -1,3 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
+import 'package:mera_bazaar/src/data/models/auth/get_user_profile/get_user_profile_response.dart';
+import 'package:mera_bazaar/src/data/models/auth/send_otp/send_otp_response.dart';
+import 'package:mera_bazaar/src/data/models/auth/verify_otp/verify_otp_response.dart';
+import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
+
 /// Implementation of the authentication data source.
 ///
 /// This class implements the [AuthDataSource] interface and provides
@@ -6,13 +14,6 @@
 /// - Sending OTP via Firebase Phone Authentication
 /// - Verifying OTP using Firebase credentials
 /// - Retrieving user profile from Firestore
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
-import 'package:mera_bazaar/src/data/models/auth/get_user_profile/get_user_profile_response.dart';
-import 'package:mera_bazaar/src/data/models/auth/send_otp/send_otp_response.dart';
-import 'package:mera_bazaar/src/data/models/auth/verify_otp/verify_otp_response.dart';
-import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
 
 /// A concrete implementation of the [AuthDataSource] interface.
 ///

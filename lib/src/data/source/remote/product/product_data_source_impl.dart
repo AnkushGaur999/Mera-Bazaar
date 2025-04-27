@@ -38,20 +38,24 @@ class ProductDataSourceImpl extends ProductDataSource {
   Future<List<ProductResponse>> getProducts({
     required String categoryId,
   }) async {
-    final List<ProductResponse> products = [];
+    try {
+      final List<ProductResponse> products = [];
 
-    final productDocs =
-        categoryId == "YsXVA7X1EgWrpUWvpf8f"
-            ? await _fireStore.collection("products").get()
-            : await _fireStore
-                .collection("products")
-                .where("category_id", isEqualTo: categoryId)
-                .get();
+      final productDocs =
+          categoryId == "YsXVA7X1EgWrpUWvpf8f"
+              ? await _fireStore.collection("products").get()
+              : await _fireStore
+                  .collection("products")
+                  .where("category_id", isEqualTo: categoryId)
+                  .get();
 
-    for (var i = 0; i < productDocs.docs.length; i++) {
-      products.add(ProductResponse.fromJson(productDocs.docs[i].data()));
+      for (var i = 0; i < productDocs.docs.length; i++) {
+        products.add(ProductResponse.fromJson(productDocs.docs[i].data()));
+      }
+
+      return products;
+    } catch (e) {
+      rethrow;
     }
-
-    return products;
   }
 }

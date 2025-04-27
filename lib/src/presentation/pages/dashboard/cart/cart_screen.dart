@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/main_export.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/widgets/cart_item.dart';
 
@@ -6,12 +7,19 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CartBloc>().add(GetCartItemsEvent());
-
     return Scaffold(
       appBar: AppBar(title: const Text('My Cart')),
       body: SafeArea(
-        child: BlocBuilder<CartBloc, CartState>(
+        child: BlocConsumer<CartBloc, CartState>(
+          listener: (context, state) {
+            if (state is DeleteCartItemLoaded ||
+                state is UpdateCartItemLoaded) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Item successfully updated")),
+              );
+              context.read<CartBloc>().add(GetCartItemsEvent());
+            }
+          },
           buildWhen:
               (current, previous) =>
                   current is GetCartItemsLoading ||
@@ -19,7 +27,8 @@ class CartScreen extends StatelessWidget {
                   current is GetCartItemsFailed,
 
           builder: (context, state) {
-            if (state is GetCartItemsLoading) {
+            if (state is GetCartItemsLoading ||
+                state is UpdateCartItemLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -41,6 +50,20 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
                 );
+              }
+
+              double totalItemsPrice = 0;
+              double totalDiscountedPrice = 0;
+              double totalPriceAfterDiscount = 0;
+
+              for (int i = 0; i < state.cartItems.length; i++) {
+                totalItemsPrice += state.cartItems[i].totalOriginalPrice!;
+                totalDiscountedPrice +=
+                    state.cartItems[i].totalOriginalPrice! -
+                    state.cartItems[i].totalDiscountedPrice!;
+
+                totalPriceAfterDiscount +=
+                    state.cartItems[i].totalDiscountedPrice!;
               }
 
               return Column(
@@ -93,23 +116,26 @@ class CartScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Subtotal: ₹1497',
+                          'Subtotal: \$$totalItemsPrice',
                           style: TextStyle(fontSize: 14.sp),
                         ),
                         Text(
-                          'Delivery Charges: ₹50',
+                          'Delivery Charges: \$50',
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey[700],
                           ),
                         ),
                         Text(
-                          'Discount: -₹250',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.green),
+                          'Discount: -\$$totalDiscountedPrice',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.green,
+                          ),
                         ),
                         const Divider(),
                         Text(
-                          'Total: ₹1297',
+                          'Total: \$$totalPriceAfterDiscount',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
@@ -117,7 +143,7 @@ class CartScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 12.h),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => context.pushNamed(AppRoutes.payment),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             padding: EdgeInsets.symmetric(
@@ -137,8 +163,7 @@ class CartScreen extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: 10.h,)
-
+                        SizedBox(height: 10.h),
                       ],
                     ),
                   ),

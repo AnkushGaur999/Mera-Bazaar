@@ -14,11 +14,12 @@
 import 'package:get_it/get_it.dart';
 import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
-import 'package:mera_bazaar/src/data/repositories/authentication/authentication_repository_impl.dart';
+import 'package:mera_bazaar/src/data/repositories/authentication/auth_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/cart/cart_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/category/category_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/home/home_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/order/order_repository_impl.dart';
+import 'package:mera_bazaar/src/data/repositories/payment/payment_repository_impl.dart';
 import 'package:mera_bazaar/src/data/repositories/product/product_repository_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source_impl.dart';
@@ -30,13 +31,16 @@ import 'package:mera_bazaar/src/data/source/remote/home/home_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/home/home_data_source_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/order/order_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/order/order_data_source_impl.dart';
+import 'package:mera_bazaar/src/data/source/remote/payment/payment_data_source.dart';
+import 'package:mera_bazaar/src/data/source/remote/payment/payment_data_source_impl.dart';
 import 'package:mera_bazaar/src/data/source/remote/product/product_data_source.dart';
 import 'package:mera_bazaar/src/data/source/remote/product/product_data_source_impl.dart';
-import 'package:mera_bazaar/src/domain/repositories/authentication_repository.dart';
+import 'package:mera_bazaar/src/domain/repositories/auth_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/cart_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/category_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/home_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/order_repository.dart';
+import 'package:mera_bazaar/src/domain/repositories/payment_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/product_repository.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/get_user_profile_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/send_otp_use_case.dart';
@@ -48,6 +52,7 @@ import 'package:mera_bazaar/src/domain/use_cases/cart/update_cart_item_use_case.
 import 'package:mera_bazaar/src/domain/use_cases/category/category_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/home/get_carousel_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/order/get_orders_history_use_case.dart';
+import 'package:mera_bazaar/src/domain/use_cases/payment/process_payment_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/product/get_products_use_case.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/cart/cart_bloc.dart';
@@ -56,6 +61,7 @@ import 'package:mera_bazaar/src/presentation/bloc/home/home_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/product/product_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
+import 'package:mera_bazaar/src/presentation/bloc/payment/payment_bloc.dart';
 
 /// Global instance of GetIt for dependency injection
 GetIt getIt = GetIt.instance;
@@ -85,7 +91,7 @@ Future<void> setupDependencies() async {
   ///
   /// Register Data Sources
   ///
-
+  ///
   getIt.registerFactory<AuthDataSource>(
     () => AuthDataSourceImpl(dioClient: getIt<DioClient>()),
   );
@@ -110,11 +116,15 @@ Future<void> setupDependencies() async {
     () => OrderDataSourceImpl(dioClient: getIt<DioClient>()),
   );
 
+  getIt.registerFactory<PaymentDataSource>(
+    () => PaymentDataSourceImpl(dioClient: getIt<DioClient>()),
+  );
+
   ///
   /// Register Repositories
   ///
 
-  getIt.registerFactory<AuthenticationRepository>(
+  getIt.registerFactory<AuthRepository>(
     () => AuthenticationRepositoryImpl(authDataSource: getIt<AuthDataSource>()),
   );
 
@@ -139,25 +149,29 @@ Future<void> setupDependencies() async {
     () => OrderRepositoryImpl(orderDataSource: getIt<OrderDataSource>()),
   );
 
+  getIt.registerFactory<PaymentRepository>(
+    () => PaymentRepositoryImpl(paymentDataSource: getIt<PaymentDataSource>()),
+  );
+
   ///
   /// Register Use Cases
   ///
 
   getIt.registerFactory<SendOtpUseCase>(
     () => SendOtpUseCase(
-      authenticationRepository: getIt<AuthenticationRepository>(),
+      authenticationRepository: getIt<AuthRepository>(),
     ),
   );
 
   getIt.registerFactory<VerifyOtpUseCase>(
     () => VerifyOtpUseCase(
-      authenticationRepository: getIt<AuthenticationRepository>(),
+      authenticationRepository: getIt<AuthRepository>(),
     ),
   );
 
   getIt.registerFactory<GetUserProfileUseCase>(
     () => GetUserProfileUseCase(
-      authenticationRepository: getIt<AuthenticationRepository>(),
+      authenticationRepository: getIt<AuthRepository>(),
     ),
   );
 
@@ -191,6 +205,10 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<GetOrdersHistoryUseCase>(
     () => GetOrdersHistoryUseCase(repository: getIt<OrderRepository>()),
+  );
+
+  getIt.registerFactory(
+    () => ProcessPaymentUseCase(paymentRepository: getIt<PaymentRepository>()),
   );
 
   ///
@@ -228,5 +246,9 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<OrderBloc>(
     () => OrderBloc(getOrdersHistoryUseCase: getIt<GetOrdersHistoryUseCase>()),
+  );
+
+  getIt.registerFactory<PaymentBloc>(
+    () => PaymentBloc(processPaymentUseCase: getIt<ProcessPaymentUseCase>()),
   );
 }

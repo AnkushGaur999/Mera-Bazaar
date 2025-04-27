@@ -49,12 +49,16 @@ class CartDataSourceImpl extends CartDataSource {
   ///
   /// Returns a list of [CartResponse] containing all cart items.
   Future<List<CartResponse>> getCartItems() async {
-    final response = await _fireStore.collection("cart").get();
+    try {
+      final response = await _fireStore.collection("cart").get();
 
-    final cartList =
-        response.docs.map((e) => CartResponse.fromJson(e.data())).toList();
+      final cartList =
+          response.docs.map((e) => CartResponse.fromJson(e.data())).toList();
 
-    return cartList;
+      return cartList;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -67,14 +71,18 @@ class CartDataSourceImpl extends CartDataSource {
   ///
   /// [id] - The ID of the cart item to delete
   Future<String> deleteCartItem({required int id}) async {
-    final response =
-        await _fireStore.collection("cart").where("id", isEqualTo: id).get();
+    try {
+      final response =
+          await _fireStore.collection("cart").where("id", isEqualTo: id).get();
 
-    for (var element in response.docs) {
-      await _fireStore.collection("cart").doc(element.id).delete();
+      for (var element in response.docs) {
+        await _fireStore.collection("cart").doc(element.id).delete();
+      }
+
+      return "Successfully Removed From Cart";
+    } catch (e) {
+      rethrow;
     }
-
-    return "Successfully Removed From Cart";
   }
 
   @override
@@ -87,19 +95,23 @@ class CartDataSourceImpl extends CartDataSource {
   ///
   /// [cartData] - The updated cart item data
   Future<String> updateCartItem({required CartResponse cartData}) async {
-    final response =
-        await _fireStore
-            .collection("cart")
-            .where("id", isEqualTo: cartData.id)
-            .get();
+    try {
+      final response =
+          await _fireStore
+              .collection("cart")
+              .where("id", isEqualTo: cartData.id)
+              .get();
 
-    _fireStore.collection("cart").doc(response.docs[0].id).update({
-      "quantity": cartData.quantity,
-      "total_discounted_price": cartData.totalDiscountedPrice,
-      "total_original_price": cartData.totalOriginalPrice,
-      "discount": cartData.discount,
-    });
+      _fireStore.collection("cart").doc(response.docs[0].id).update({
+        "quantity": cartData.quantity,
+        "total_discounted_price": cartData.totalDiscountedPrice,
+        "total_original_price": cartData.totalOriginalPrice,
+        "discount": cartData.discount,
+      });
 
-    return "Successfully Updated";
+      return "Successfully Updated";
+    } catch (e) {
+      rethrow;
+    }
   }
 }

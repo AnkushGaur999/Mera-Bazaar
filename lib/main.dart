@@ -3,9 +3,9 @@
 /// This file contains the main entry point of the application and the root widget.
 /// It initializes Firebase, sets up dependencies, and configures the app's theme and routing.
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:mera_bazaar/src/config/services/notification_service.dart';
-import 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
+
+import 'package:mera_bazaar/src/config/localization/app_localizations.dart';
+
 import 'main_export.dart';
 
 /// The main entry point of the application.
@@ -62,7 +62,9 @@ class MyApp extends StatelessWidget {
         // Shopping cart management
         BlocProvider(create: (context) => getIt<CartBloc>()),
         // Order management
-        BlocProvider(create: (context)=> getIt<OrderBloc>()),
+        BlocProvider(create: (context) => getIt<OrderBloc>()),
+        // Payment management
+        BlocProvider(create: (context) => getIt<PaymentBloc>()),
       ],
       child: ScreenUtilInit(
         // Design size based on standard mobile screen dimensions

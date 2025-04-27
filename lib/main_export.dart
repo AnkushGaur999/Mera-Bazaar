@@ -38,4 +38,7 @@ export 'package:mera_bazaar/src/presentation/bloc/cart/cart_bloc.dart';
 export 'src/config/di/service_locator.dart';
 
 // Localization
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+export 'package:firebase_analytics/firebase_analytics.dart';
+export 'package:mera_bazaar/src/config/services/notification_service.dart';
+export 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
+export 'package:mera_bazaar/src/presentation/bloc/payment/payment_bloc.dart';

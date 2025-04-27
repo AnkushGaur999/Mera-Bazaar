@@ -37,6 +37,7 @@ dependencies:
   firebase_messaging: ^15.2.5
   flutter_local_notifications: ^19.0.0
   firebase_analytics: ^11.4.5
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -45,16 +46,34 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.4.15
   json_serializable: ^6.9.4
+  flutter_gen_runner: ^5.10.0
   mockito: ^5.4.4
+
+flutter_gen:
+  assets:
+    outputs:
+      directory_path_enabled: true
+
+  output: lib/gen/
+  line_length: 80
+
+  integrations:
+    image: true
+    flutter_svg: true
+    rive: true
+    lottie: true
+
 
 
 flutter:
-  generate: true
   uses-material-design: true
 
   assets:
     - assets/images/
     - assets/files/
+    - assets/icons/
+
+
 
   
   

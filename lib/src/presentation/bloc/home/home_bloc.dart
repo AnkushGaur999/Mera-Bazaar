@@ -13,6 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.getCarouselUseCase}) : super(HomeInitial()) {
     on<GetCarouselsEvent>(_getCarousels);
+    add(GetCarouselsEvent());
   }
 
   Future<void> _getCarousels(

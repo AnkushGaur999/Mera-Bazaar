@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/gen/assets.gen.dart';
 import 'package:mera_bazaar/src/config/route/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,31 +33,27 @@ class _SplashScreenState extends State<SplashScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
-              child: Image.asset(
-            "assets/images/main_icon.png",
-            width: 180,
-            height: 180,
-            fit: BoxFit.contain,
-          )),
+            child: Assets.images.mainIcon.image(
+              width: 180,
+              height: 180,
+              fit: BoxFit.contain,
+            ),
+          ),
           const Text(
             "Mera Bazaar",
             style: TextStyle(
-                color: Colors.blueAccent,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+              color: Colors.blueAccent,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          const SizedBox(height: 120.0),
           const SizedBox(
-            height: 120.0,
+            width: 30,
+            height: 30,
+            child: CircularProgressIndicator(strokeWidth: 3),
           ),
-          const SizedBox(
-              width: 30,
-              height: 30,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-              )),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 10.0),
         ],
       ),
     );

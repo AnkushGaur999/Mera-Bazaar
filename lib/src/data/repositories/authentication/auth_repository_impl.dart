@@ -1,10 +1,3 @@
-/// Implementation of the authentication repository.
-///
-/// This class implements the [AuthenticationRepository] interface and provides
-/// concrete implementations for authentication-related operations such as:
-/// - Sending OTP
-/// - Verifying OTP
-/// - Retrieving user profile
 import 'package:dio/dio.dart';
 import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
 import 'package:mera_bazaar/src/core/network/data_state.dart';
@@ -12,14 +5,22 @@ import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
 import 'package:mera_bazaar/src/domain/entities/auth/get_user_profile_entity.dart';
 import 'package:mera_bazaar/src/domain/entities/auth/send_otp_response_entity.dart';
 import 'package:mera_bazaar/src/domain/entities/auth/verify_otp_response_entity.dart';
-import 'package:mera_bazaar/src/domain/repositories/authentication_repository.dart';
+import 'package:mera_bazaar/src/domain/repositories/auth_repository.dart';
 
-/// A concrete implementation of the [AuthenticationRepository] interface.
+/// Implementation of the authentication repository.
+///
+/// This class implements the [AuthRepository] interface and provides
+/// concrete implementations for authentication-related operations such as:
+/// - Sending OTP
+/// - Verifying OTP
+/// - Retrieving user profile
+
+/// A concrete implementation of the [AuthRepository] interface.
 ///
 /// This class handles the actual API calls through the [AuthDataSource] and
 /// converts the responses to domain entities. It also handles error cases by
 /// converting Dio exceptions to [NetworkException]s.
-class AuthenticationRepositoryImpl extends AuthenticationRepository {
+class AuthenticationRepositoryImpl extends AuthRepository {
   /// The data source used to make API calls
   final AuthDataSource authDataSource;
 

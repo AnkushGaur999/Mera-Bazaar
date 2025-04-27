@@ -19,6 +19,7 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/notification/notifi
 import 'package:mera_bazaar/src/presentation/pages/login/login_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/order/orders_history_page.dart';
 import 'package:mera_bazaar/src/presentation/pages/otp/opt_screen.dart';
+import 'package:mera_bazaar/src/presentation/pages/payment/payment_page.dart';
 import 'package:mera_bazaar/src/presentation/pages/product/product_details_page.dart';
 import 'package:mera_bazaar/src/presentation/pages/theme_update_page.dart';
 import '../../presentation/pages/splash/splash_screen.dart';
@@ -42,6 +43,7 @@ class AppRoutes {
   static const String productDetails = 'product_details';
   static const String themeUpdate = 'theme_update';
   static const String orderHistory = 'order_history';
+  static const String payment = 'payment';
 
   /// Route paths for URL matching
   static const String _splash = '/';
@@ -57,6 +59,7 @@ class AppRoutes {
   static const String _productDetails = '/product_details';
   static const String _themeUpdate = '/theme_update';
   static const String _orderHistory = '/order_history';
+  static const String _payment = '/payment';
 
   /// The main router configuration for the application.
   ///
@@ -138,6 +141,12 @@ class AppRoutes {
         name: orderHistory,
         path: _orderHistory,
         builder: (context, state) => const OrdersHistoryPage(),
+      ),
+
+      GoRoute(
+        name: payment,
+        path: _payment,
+        builder: (context, state) => const PaymentPage(),
       ),
     ],
 

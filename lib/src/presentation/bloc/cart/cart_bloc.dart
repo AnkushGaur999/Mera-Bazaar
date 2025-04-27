@@ -23,10 +23,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     required this.deleteCartItemUseCase,
     required this.updateCartItemUseCase,
   }) : super(CartInitial()) {
-    on<AddToCartEvent>(_addToCart);
     on<GetCartItemsEvent>(_getCartItems);
+    on<AddToCartEvent>(_addToCart);
     on<DeleteCartItemEvent>(_deleteCartItem);
     on<UpdateCartItemEvent>(_updateCartItem);
+
+    add(GetCartItemsEvent());
   }
 
   Future<void> _addToCart(AddToCartEvent event, Emitter<CartState> emit) async {
@@ -36,6 +38,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     if (response is DataSuccess) {
       emit(AddToCartLoaded(message: response.data!));
+      add(GetCartItemsEvent());
     } else {
       emit(AddToCartFailed(message: response.exception!.message));
     }
@@ -66,7 +69,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     );
     if (response is DataSuccess) {
       emit(DeleteCartItemLoaded(message: response.data!));
-      add(GetCartItemsEvent());
     } else {
       emit(DeleteCartItemFailed(message: response.exception!.message));
     }
@@ -89,7 +91,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     if (response is DataSuccess) {
       emit(UpdateCartItemLoaded(message: response.data!));
-      add(GetCartItemsEvent());
     } else {
       emit(UpdateCartItemFailed(message: response.exception!.message));
     }

@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mera_bazaar/src/config/route/app_routes.dart';
 import 'package:mera_bazaar/src/core/extensions/context_extensions.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
@@ -112,10 +116,36 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: Colors.red,
               ));
             }
-          })
+          }),
+          
+          SizedBox(height: 20.h,),
+          
+          TextButton(onPressed: ()=> signInWithGoogle(), child: Text("Google"),)
+          
         ],
       ),
     );
+  }
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+
+      if (kDebugMode) {
+        print('exception->$e');
+      }
+    }
   }
 
   @override

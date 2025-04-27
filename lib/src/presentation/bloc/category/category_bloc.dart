@@ -14,6 +14,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   CategoryBloc({required this.categoryUseCase}) : super(CategoryInitial()) {
     on<GetCategoriesEvent>(_getCategories);
+    add(GetCategoriesEvent());
   }
 
   Future<void> _getCategories(
