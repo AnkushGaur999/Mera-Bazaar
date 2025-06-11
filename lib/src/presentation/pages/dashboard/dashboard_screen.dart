@@ -7,7 +7,7 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/account/account_scr
 import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/cart_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../config/localization/app_localizations.dart';
 
 
 class DashboardScreen extends StatefulWidget {
