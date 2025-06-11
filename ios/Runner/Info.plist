@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Mera Bazaar</string>
+	<string>${App_display_name}</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -46,9 +46,9 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>CFBundleLocalizations</key>
-    <array>
-      <string>en</string>
-      <string>ar</string>
-    </array>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+	</array>
 </dict>
 </plist>

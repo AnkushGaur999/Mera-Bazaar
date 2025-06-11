@@ -11,19 +11,10 @@ import 'category_use_case_test.mocks.dart';
 
 @GenerateMocks([CategoryRepository])
 void main() {
-  // Add this block at the beginning of your main() function or in setUpAll()
   setUpAll(() {
-    // Provide a dummy value for DataState<List<CategoryEntity>>
-    // This will be used by mockito's generated code when a stub is not provided.
-    // We're providing a DataSuccess with an empty list of CategoryEntity.
     provideDummy<DataState<List<CategoryEntity>>>(
       DataSuccess<List<CategoryEntity>>(data: []),
     );
-
-    // You might also need to provide dummies for CategoryEntity itself if it's
-    // ever expected to be returned directly by a mock in a way mockito can't infer.
-    // For example, if a mock returns a single CategoryEntity and it's abstract/complex:
-    // provideDummy<CategoryEntity>(CategoryEntity(id: '', name: '', imageUrl: ''));
   });
 
   late CategoryRepository repository;

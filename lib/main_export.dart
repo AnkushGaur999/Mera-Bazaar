@@ -26,6 +26,9 @@ export 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 // Firebase Configuration
 export 'package:mera_bazaar/src/core/utils/firebase_options.dart';
 
+// Firebase Analytics
+export 'package:firebase_analytics/firebase_analytics.dart';
+
 // BLoC Exports
 export 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
 export 'package:mera_bazaar/src/presentation/bloc/category/category_bloc.dart';
@@ -33,9 +36,19 @@ export 'package:mera_bazaar/src/presentation/bloc/home/home_bloc.dart';
 export 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
 export 'package:mera_bazaar/src/presentation/bloc/product/product_bloc.dart';
 export 'package:mera_bazaar/src/presentation/bloc/cart/cart_bloc.dart';
+export 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
 
 // Dependency Injection
 export 'src/config/di/service_locator.dart';
 
 // Localization
 export 'package:mera_bazaar/src/config/localization/app_localizations.dart';
+
+// Notification Service
+export 'package:mera_bazaar/src/config/services/notification_service.dart';
+
+// Flavor Config
+export 'package:mera_bazaar/src/config/flavors/flavor_config.dart';
+
+
+
