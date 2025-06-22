@@ -6,13 +6,17 @@
 /// - Sending OTP via Firebase Phone Authentication
 /// - Verifying OTP using Firebase credentials
 /// - Retrieving user profile from Firestore
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
 import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
+import 'package:mera_bazaar/src/core/network/data_state.dart';
 import 'package:mera_bazaar/src/data/models/auth/get_user_profile/get_user_profile_response.dart';
 import 'package:mera_bazaar/src/data/models/auth/send_otp/send_otp_response.dart';
 import 'package:mera_bazaar/src/data/models/auth/verify_otp/verify_otp_response.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
+import 'package:mera_bazaar/src/domain/entities/auth/phone_auth_result.dart';
 
 /// A concrete implementation of the [AuthDataSource] interface.
 ///
@@ -29,10 +33,31 @@ class AuthDataSourceImpl extends AuthDataSource {
   /// The Firestore instance for database operations
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
+  /// The Firebase Authentication instance
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   /// Creates a new instance of [AuthDataSourceImpl].
   ///
   /// Requires a [DioClient] to be provided for making HTTP requests.
   AuthDataSourceImpl({required this.dioClient});
+
+  @override
+  Future<DataState<User>> login(String email, String password) async {
+    try {
+      final response = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return DataSuccess(data: response.user!);
+    } on FirebaseAuthException catch (e) {
+      return DataError(
+        exception: MyBazaarException.fromException(e, message: e.code),
+      );
+    } catch (e) {
+      return DataError(exception: MyBazaarException.fromException(e));
+    }
+  }
 
   @override
   /// Sends an OTP to the specified phone number using Firebase Phone Authentication.
@@ -47,51 +72,46 @@ class AuthDataSourceImpl extends AuthDataSource {
   /// Returns a [SendOtpResponse] containing the result of the operation.
   ///
   /// [number] - The phone number to send the OTP to (without country code)
-  Future<SendOtpResponse> sendOtp(String number) async {
+  Future<PhoneAuthResult> sendOtp(String number) async {
     try {
-      SendOtpResponse? sendOtpResponse;
+      final Completer<PhoneAuthResult> completer = Completer();
 
       await _auth.verifyPhoneNumber(
         phoneNumber: "+91$number",
-        verificationCompleted: (
-          PhoneAuthCredential verificationCompleted,
-        ) async {
-          final result = await _auth.signInWithPhoneNumber(number);
-          sendOtpResponse = SendOtpResponse(
-            success: true,
-            message:
-                "OTP Sent! Save this verificationId: ${result.verificationId}",
-            error: false,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          final UserCredential userCredential = await _auth
+              .signInWithCredential(credential);
+          completer.complete(
+            PhoneAuthResult(success: true, user: userCredential.user),
           );
         },
         verificationFailed: (FirebaseAuthException verificationFailed) async {
-          sendOtpResponse = SendOtpResponse(
-            success: false,
-            message: "Invalid Phone Number",
-            error: true,
+          completer.complete(
+            PhoneAuthResult(
+              success: false,
+              message: verificationFailed.message,
+            ),
           );
         },
         codeSent: (String verificationId, int? resendToken) {
-          sendOtpResponse = SendOtpResponse(
-            success: true,
-            message: "OTP Sent! Save this verificationId: $verificationId",
-            error: false,
+          completer.complete(
+            PhoneAuthResult(
+              success: true,
+              verificationId: verificationId,
+              resendToken: resendToken,
+            ),
           );
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          sendOtpResponse = SendOtpResponse(
-            success: false,
-            message: "Server Timeout Error.",
-            error: true,
+          completer.complete(
+            const PhoneAuthResult(
+              success: false,
+              message: "SMS code auto-retrieval timed out.",
+            ),
           );
         },
       );
-
-      return SendOtpResponse(
-        success: true,
-        message: "OTP Sent Successfully.",
-        error: false,
-      );
+      return completer.future;
     } catch (_) {
       rethrow;
     }
@@ -107,21 +127,18 @@ class AuthDataSourceImpl extends AuthDataSource {
   ///
   /// [verificationId] - The ID of the verification process
   /// [otp] - The OTP code to verify
-  Future<VerifyOtpResponse> verifyOtp(String verificationId, String otp) async {
+  Future<PhoneAuthResult> verifyOtp(String verificationId, String otp) async {
     try {
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId:
-            "AD8T5IsOgsO5Vlq6Jly8XGWgP4ee9FsWmI2tdje_v6tLEEWe93Fat9r7JHTYJWo0OglnDb4sQHEUqSZoOXXoU5N8LEKVU6mh5RMadxHPtzAaRKxFhPG_vH58JbrTnLLGUvBWINX4UHxryqLv10nIfnnOWyZgPD_OqQ",
-        smsCode: "123123",
+        verificationId: verificationId,
+        smsCode: otp,
       );
 
-      await _auth.signInWithCredential(phoneAuthCredential);
-
-      return VerifyOtpResponse(
-        success: true,
-        message: "OTP Verified!",
-        error: false,
+      final userCredential = await _auth.signInWithCredential(
+        phoneAuthCredential,
       );
+
+      return PhoneAuthResult(success: true, user: userCredential.user);
     } catch (_) {
       rethrow;
     }

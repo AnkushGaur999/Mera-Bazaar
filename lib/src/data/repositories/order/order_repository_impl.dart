@@ -17,9 +17,9 @@ class OrderRepositoryImpl extends OrderRepository {
 
       return DataSuccess(data: response.map((e) => e.toEntity(e)).toList());
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } on Exception catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 }

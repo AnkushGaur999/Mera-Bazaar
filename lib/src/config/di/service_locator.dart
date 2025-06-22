@@ -40,6 +40,7 @@ import 'package:mera_bazaar/src/domain/repositories/order_repository.dart';
 import 'package:mera_bazaar/src/domain/repositories/product_repository.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/get_user_profile_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/send_otp_use_case.dart';
+import 'package:mera_bazaar/src/domain/use_cases/auth/user_login_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/verify_otp_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/add_to_cart_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/delete_cart_item_use_case.dart';
@@ -143,6 +144,10 @@ Future<void> setupDependencies() async {
   /// Register Use Cases
   ///
 
+  getIt.registerFactory<UserLoginUseCase>(
+    () => UserLoginUseCase(authRepository: getIt<AuthenticationRepository>()),
+  );
+
   getIt.registerFactory<SendOtpUseCase>(
     () => SendOtpUseCase(
       authenticationRepository: getIt<AuthenticationRepository>(),
@@ -199,9 +204,11 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
+      userLoginUseCase: getIt<UserLoginUseCase>(),
       sendOtpUseCase: getIt<SendOtpUseCase>(),
       verifyOtpUseCase: getIt<VerifyOtpUseCase>(),
       userProfileUseCase: getIt<GetUserProfileUseCase>(),
+      storageManager: getIt<LocalStorageManager>()
     ),
   );
 

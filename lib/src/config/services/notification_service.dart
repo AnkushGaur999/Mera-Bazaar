@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mera_bazaar/main_export.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -19,6 +20,7 @@ class NotificationService {
 
   final _messaging = FirebaseMessaging.instance;
   final _localNotifications = FlutterLocalNotificationsPlugin();
+
 
   Future<void> initialize() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -134,6 +136,8 @@ class NotificationService {
   void _handleBackgroundMessage(RemoteMessage message) {
     if (kDebugMode) {
       print('Handling a background message: ${message.data}');
+
+      AppRoutes.router.go(AppRoutes.notification);
     }
   }
 }

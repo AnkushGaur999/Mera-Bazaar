@@ -1,5 +1,5 @@
 import 'package:mera_bazaar/src/core/network/data_state.dart';
-import 'package:mera_bazaar/src/domain/entities/auth/verify_otp_response_entity.dart';
+import 'package:mera_bazaar/src/domain/entities/auth/phone_auth_result.dart';
 import 'package:mera_bazaar/src/domain/repositories/authentication_repository.dart';
 
 class VerifyOtpUseCase {
@@ -7,7 +7,7 @@ class VerifyOtpUseCase {
 
   VerifyOtpUseCase({required this.authenticationRepository});
 
-  Future<DataState<VerifyOtpResponseEntity>> sendOtp({
+  Future<DataState<PhoneAuthResult>> call({
     required String number,
     required String otp,
   }) async {

@@ -12,7 +12,20 @@
           "package_name": "com.example.mera_bazaar"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "101644876939-751nk3aeeg0lk2euqj6hpe91nk1cul3j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mera_bazaar",
+            "certificate_hash": "b376f9a5590672b4f7317ab0df28d0b9a348d372"
+          }
+        },
+        {
+          "client_id": "101644876939-loq56egeco8tpbedb4g4edv09dfkjtpt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD0X1Qqx4z0tVZD6aojlDIASZVvhSvHwOs"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101644876939-loq56egeco8tpbedb4g4edv09dfkjtpt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101644876939-ftkj5562qeg9pmctkc27oh3cp7nh4e3r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.meraBazaar"
+              }
+            }
+          ]
         }
       }
     }

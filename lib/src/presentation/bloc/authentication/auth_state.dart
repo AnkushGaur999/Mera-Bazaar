@@ -24,6 +24,48 @@ class AuthInitial extends AuthState {
   List<Object?> get props => [];
 }
 
+/// State indicating that the user is being logged in.
+///
+/// This state is emitted when the BLoC is processing a request to log in a user.
+
+class LoginLoading extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
+/// State indicating that the user has successfully logged in.
+///
+/// This state is emitted when the user has successfully logged in.
+class LoginSuccess extends AuthState {
+  final User user;
+
+  /// Creates a new [LoginSuccess] state with the specified message.
+  /// ///
+  /// [message] - A message indicating the success of the operation
+
+  LoginSuccess({required this.user});
+
+  @override
+  List<Object?> get props => [user];
+}
+
+/// State indicating that logging in a user failed.
+///
+/// This state is emitted when there was an error logging in the user.
+
+class LoginError extends AuthState {
+  /// A message describing the error that occurred
+  final String message;
+
+  /// Creates a new [LoginError] state with the specified message.
+  ///
+  /// [message] - A message describing the error that occurred
+  LoginError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
 /// State indicating that an OTP is being sent.
 ///
 /// This state is emitted when the BLoC is processing a request to send an OTP.

@@ -72,7 +72,7 @@ void main() {
 
         // assert
         expect(result, isA<DataError<List<CategoryEntity>>>());
-        expect(result.exception, isA<NetworkException>());
+        expect(result.exception, isA<MyBazaarException>());
         verify(mockDataSource.getCategory());
       },
     );
@@ -90,7 +90,7 @@ void main() {
 
         // assert
         expect(result, isA<DataError<List<CategoryEntity>>>());
-        expect(result.exception, isA<NetworkException>());
+        expect(result.exception, isA<MyBazaarException>());
         verify(mockDataSource.getCategory());
       },
     );

@@ -9,7 +9,6 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_s
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
 import '../../../config/localization/app_localizations.dart';
 
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -22,11 +21,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final PageController _pageController = PageController();
 
-  void _onItemTapped(int index) {
-
-    if(index == 2 || index == 3){
-      if(getIt<LocalStorageManager>().token.isEmpty){
-        context.pushNamed(AppRoutes.login);
+  void _onItemTapped(int index) async {
+    if (index == 2 || index == 3) {
+      if (await getIt<LocalStorageManager>().getToken() == "") {
+        if (mounted) context.pushNamed(AppRoutes.login);
         return;
       }
     }
@@ -47,52 +45,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: _pages,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          height: 90,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 5.0,
-          surfaceTintColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          clipBehavior: Clip.antiAlias,
-          child: SizedBox(
-            height: kBottomNavigationBarHeight,
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              selectedLabelStyle: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-              items: <BottomNavigationBarItem>[
-                 BottomNavigationBarItem(
-                  icon: const Icon(Icons.home_outlined),
-                  label: AppLocalizations.of(context).home,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.category_sharp),
-                  label: AppLocalizations.of(context).category,
-                ),
-                 BottomNavigationBarItem(
-                  icon: const Icon(Icons.shopping_cart),
-                  label: AppLocalizations.of(context).cart,
-                ),
-                 BottomNavigationBarItem(
-                  icon: const Icon(Icons.account_circle),
-                  label: AppLocalizations.of(context).account,
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              //New
-              onTap: _onItemTapped,
-              selectedItemColor: Colors.blue.shade900,
-              unselectedItemColor: Colors.grey,
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 90,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 5.0,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
+        child: SizedBox(
+          height: kBottomNavigationBarHeight,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedLabelStyle: TextStyle(
+              color: Colors.blue.shade900,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.home_outlined),
+                label: AppLocalizations.of(context).home,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.category_sharp),
+                label: AppLocalizations.of(context).category,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.shopping_cart),
+                label: AppLocalizations.of(context).cart,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.account_circle),
+                label: AppLocalizations.of(context).account,
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            //New
+            onTap: _onItemTapped,
+            selectedItemColor: Colors.blue.shade900,
+            unselectedItemColor: Colors.grey,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   @override

@@ -14,6 +14,22 @@ part of "auth_bloc.dart";
 /// It extends [Equatable] to allow for easy comparison of events.
 sealed class AuthEvent extends Equatable {}
 
+
+/// Event for logging in a user.
+///
+/// This event is dispatched when the user enters their email and password
+/// and wants to log in.
+
+class LoginEvent extends AuthEvent {
+  final String email;
+  final String password;
+  LoginEvent({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
+
+}
+
 /// Event for sending an OTP to a phone number.
 ///
 /// This event is dispatched when the user enters their phone number

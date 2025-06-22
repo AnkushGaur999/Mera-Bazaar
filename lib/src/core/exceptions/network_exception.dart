@@ -1,6 +1,6 @@
 /// Network exception handling for API requests.
 ///
-/// This file defines a [NetworkException] class that provides a standardized way
+/// This file defines a [MyBazaarException] class that provides a standardized way
 /// to handle and represent network-related errors in the application. It extends
 /// [Equatable] for easy comparison and implements [Exception] for proper error handling.
 
@@ -29,14 +29,14 @@ import 'package:mera_bazaar/src/core/network/model/network_error_model.dart';
 ///   throw NetworkException.fromDioError(e);
 /// }
 /// ```
-class NetworkException extends Equatable implements Exception {
+class MyBazaarException extends Equatable implements Exception {
   /// The human-readable error message
   late final String message;
 
   /// The HTTP status code of the response (if applicable)
   late final int? statusCode;
 
-  /// Creates a [NetworkException] from a [DioException].
+  /// Creates a [MyBazaarException] from a [DioException].
   ///
   /// This constructor analyzes the [DioException] and sets appropriate
   /// error messages based on the exception type:
@@ -47,7 +47,7 @@ class NetworkException extends Equatable implements Exception {
   /// - And more
   ///
   /// [dioException] - The DioException to convert
-  NetworkException.fromDioError(DioException dioException) {
+  MyBazaarException.fromDioError(DioException dioException) {
     statusCode = dioException.response?.statusCode;
 
     switch (dioException.type) {
@@ -93,25 +93,26 @@ class NetworkException extends Equatable implements Exception {
     }
   }
 
-  /// Creates a [NetworkException] from a generic [Object] exception.
+  /// Creates a [MyBazaarException] from a generic [Object] exception.
   ///
   /// This constructor handles non-Dio exceptions and provides appropriate
   /// error messages based on the exception type.
   ///
   /// [e] - The exception to convert
-  NetworkException.fromException(Object e) {
+  MyBazaarException.fromException(Object e, {String? message}) {
     statusCode = 500;
     if (e is FormatException) {
-      message = 'Unexpected error occurred';
+      this.message = message ?? 'Unexpected error occurred';
     } else {
-      message = "Something went wrong.\nPlease try again later.";
+      this.message =
+          message ?? "Something went wrong.\nPlease try again later.";
     }
   }
 
   /// Returns a list of properties to use for equality comparison.
   ///
   /// This method is used by [Equatable] to determine if two instances
-  /// of [NetworkException] are equal.
+  /// of [MyBazaarException] are equal.
   @override
   List<Object?> get props => [message, statusCode];
 }

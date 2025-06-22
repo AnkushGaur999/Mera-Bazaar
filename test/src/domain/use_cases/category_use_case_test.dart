@@ -58,7 +58,7 @@ void main() {
       'should return a DataFailed when repository returns an error',
       () async {
         // Arrange: Define the mock's behavior to simulate an error
-        final exception = NetworkException.fromDioError(
+        final exception = MyBazaarException.fromDioError(
           DioException(requestOptions: RequestOptions()),
         );
 

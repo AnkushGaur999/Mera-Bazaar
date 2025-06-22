@@ -39,7 +39,7 @@ class DioClient {
           ..options.connectTimeout = const Duration(seconds: 30)
           ..options.receiveTimeout = const Duration(seconds: 30)
           ..options.sendTimeout = const Duration(seconds: 30)
-          ..interceptors.add(AuthInterceptor(token: localStorageManager.token));
+          ..interceptors.add(AuthInterceptor(token: ""));
   }
 
   /// Performs a GET request to the specified URL.

@@ -30,19 +30,19 @@ class HomeRepositoryImpl extends HomeRepository {
   ///
   /// This method fetches carousel data from the data source and transforms
   /// it into domain entities. It handles network errors and other exceptions
-  /// by wrapping them in appropriate [NetworkException] instances.
+  /// by wrapping them in appropriate [MyBazaarException] instances.
   ///
   /// Returns a [DataState] containing either:
   /// - A list of [CarouselEntity] objects on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   Future<DataState<List<CarouselEntity>>> getCarousels() async {
     try {
       final response = await homeDataSource.getCarousels();
       return DataSuccess(data: response.map((e) => e.toEntity(e)).toList());
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 }
