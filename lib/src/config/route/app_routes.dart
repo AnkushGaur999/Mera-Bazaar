@@ -145,12 +145,12 @@ class AppRoutes {
     ///
     /// Checks if the user is authenticated when accessing protected routes.
     /// Redirects to login screen if the user is not authenticated.
-    redirect: (context, state) {
+    redirect: (context, state) async {
       if (state.path == _cart ||
           state.path == _account ||
           state.path == _notification ||
           state.path == _profile) {
-        if (getIt<LocalStorageManager>().token.isEmpty) {
+        if (await getIt<LocalStorageManager>().getToken() != "") {
           return _login;
         }
         return null;

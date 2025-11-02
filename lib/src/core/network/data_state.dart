@@ -20,7 +20,7 @@ sealed class DataState<T> {
   final T? data;
 
   /// The exception that occurred, if the operation failed
-  final NetworkException? exception;
+  final MyBazaarException? exception;
 
   /// Creates a new [DataState] with optional data and exception.
   ///
@@ -48,6 +48,6 @@ class DataError<T> extends DataState<T> {
   /// Creates a new [DataError] with the specified exception.
   ///
   /// [exception] - The error that occurred
-  DataError({required NetworkException exception})
+  DataError({required MyBazaarException exception})
     : super(exception: exception);
 }

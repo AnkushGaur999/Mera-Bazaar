@@ -32,6 +32,19 @@
   <title>mera_bazaar</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function(registration) {
+        console.log('Service Worker Registered with scope:', registration.scope);
+      }).catch(function(err) {
+        console.log('Service Worker registration failed:', err);
+      });
+  }
+</script>
+
+
 <body>
   <script src="flutter_bootstrap.js" async></script>
 </body>

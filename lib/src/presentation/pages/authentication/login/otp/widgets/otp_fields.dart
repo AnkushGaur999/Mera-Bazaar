@@ -22,13 +22,10 @@ class _OtpFieldsState extends State<OtpFields> {
 
   @override
   Widget build(BuildContext context) {
-    // const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-    // const fillColor = Color.fromRGBO(243, 246, 249, 0);
-    // const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
+      width: 42,
+      height: 42,
       textStyle: const TextStyle(
         fontSize: 22,
         color: Colors.black,
@@ -51,6 +48,7 @@ class _OtpFieldsState extends State<OtpFields> {
             child: Pinput(
               controller: widget.pinController,
               focusNode: focusNode,
+              length: 6,
               // androidSmsAutofillMethod:
               //     AndroidSmsAutofillMethod.smsUserConsentApi,
               // listenForMultipleSmsOnAndroid: true,

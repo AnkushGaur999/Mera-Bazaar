@@ -17,7 +17,7 @@ import 'package:mera_bazaar/src/domain/repositories/cart_repository.dart';
 ///
 /// This class handles the actual API calls through the [CartDataSource] and
 /// converts the responses to domain entities. It also handles error cases by
-/// converting exceptions to [NetworkException]s.
+/// converting exceptions to [MyBazaarException]s.
 class CartRepositoryImpl extends CartRepository {
   /// The data source used to make API calls
   final CartDataSource cartDataSource;
@@ -32,11 +32,11 @@ class CartRepositoryImpl extends CartRepository {
   ///
   /// This method delegates the API call to the [cartDataSource] and wraps the
   /// response in a [DataState]. If an error occurs, it is converted to a
-  /// [NetworkException] and wrapped in a [DataError].
+  /// [MyBazaarException] and wrapped in a [DataError].
   ///
   /// Returns a [DataState] containing either:
   /// - A success message string on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   ///
   /// [cartEntity] - The cart item to add
   Future<DataState<String>> addToCart({required CartEntity cartEntity}) async {
@@ -46,9 +46,9 @@ class CartRepositoryImpl extends CartRepository {
       );
       return DataSuccess(data: response);
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 
@@ -57,19 +57,19 @@ class CartRepositoryImpl extends CartRepository {
   ///
   /// This method delegates the API call to the [cartDataSource] and wraps the
   /// response in a [DataState]. If an error occurs, it is converted to a
-  /// [NetworkException] and wrapped in a [DataError].
+  /// [MyBazaarException] and wrapped in a [DataError].
   ///
   /// Returns a [DataState] containing either:
   /// - A list of [CartEntity] on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   Future<DataState<List<CartEntity>>> getCartItems() async {
     try {
       final response = await cartDataSource.getCartItems();
       return DataSuccess(data: response.map((e) => e.toEntity(e)).toList());
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 
@@ -78,11 +78,11 @@ class CartRepositoryImpl extends CartRepository {
   ///
   /// This method delegates the API call to the [cartDataSource] and wraps the
   /// response in a [DataState]. If an error occurs, it is converted to a
-  /// [NetworkException] and wrapped in a [DataError].
+  /// [MyBazaarException] and wrapped in a [DataError].
   ///
   /// Returns a [DataState] containing either:
   /// - A success message string on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   ///
   /// [id] - The ID of the cart item to delete
   Future<DataState<String>> deleteCartItem({required int id}) async {
@@ -90,9 +90,9 @@ class CartRepositoryImpl extends CartRepository {
       final response = await cartDataSource.deleteCartItem(id: id);
       return DataSuccess(data: response);
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 
@@ -101,11 +101,11 @@ class CartRepositoryImpl extends CartRepository {
   ///
   /// This method delegates the API call to the [cartDataSource] and wraps the
   /// response in a [DataState]. If an error occurs, it is converted to a
-  /// [NetworkException] and wrapped in a [DataError].
+  /// [MyBazaarException] and wrapped in a [DataError].
   ///
   /// Returns a [DataState] containing either:
   /// - A success message string on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   ///
   /// [cartEntity] - The updated cart item data
   Future<DataState<String>> updateCartItem({
@@ -117,9 +117,9 @@ class CartRepositoryImpl extends CartRepository {
       );
       return DataSuccess(data: response);
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 }

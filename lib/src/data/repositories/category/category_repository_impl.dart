@@ -14,7 +14,7 @@ import 'package:mera_bazaar/src/domain/repositories/category_repository.dart';
 ///
 /// This class handles the actual API calls through the [CategoryDataSource] and
 /// converts the responses to domain entities. It also handles error cases by
-/// converting exceptions to [NetworkException]s.
+/// converting exceptions to [MyBazaarException]s.
 class CategoryRepositoryImpl extends CategoryRepository {
   /// The data source used to make API calls
   final CategoryDataSource categoryDataSource;
@@ -29,19 +29,19 @@ class CategoryRepositoryImpl extends CategoryRepository {
   ///
   /// This method delegates the API call to the [categoryDataSource] and wraps the
   /// response in a [DataState]. If an error occurs, it is converted to a
-  /// [NetworkException] and wrapped in a [DataError].
+  /// [MyBazaarException] and wrapped in a [DataError].
   ///
   /// Returns a [DataState] containing either:
   /// - A list of [CategoryEntity] on success
-  /// - A [NetworkException] on failure
+  /// - A [MyBazaarException] on failure
   Future<DataState<List<CategoryEntity>>> getCategories() async {
     try {
       final data = await categoryDataSource.getCategory();
       return DataSuccess(data: data.map((e) => e.toEntity(e)).toList());
     } on DioException catch (e) {
-      return DataError(exception: NetworkException.fromDioError(e));
+      return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {
-      return DataError(exception: NetworkException.fromException(e));
+      return DataError(exception: MyBazaarException.fromException(e));
     }
   }
 }

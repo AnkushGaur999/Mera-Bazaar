@@ -28,7 +28,6 @@ void mainCommon({
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
-  await LocalStorageManager.init();
   await setupDependencies();
   await NotificationService.instance.initialize();
   SystemChrome.setPreferredOrientations([

@@ -7,8 +7,8 @@
 /// - Login state
 /// - Data persistence
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mera_bazaar/src/core/constants/storage_constant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages local storage operations using SharedPreferences.
 ///
@@ -21,41 +21,55 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// It uses SharedPreferences for persistent storage across app restarts.
 class LocalStorageManager {
   /// The SharedPreferences instance used for storage
-  static late SharedPreferences _sharedPreferences;
-
-  /// Initializes the SharedPreferences instance.
-  ///
-  /// This method must be called before using any other methods in this class.
-  /// It is typically called during app initialization.
-  static Future<void> init() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
+  static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  static const IOSOptions _iosOptions = IOSOptions();
+  static final AndroidOptions _androidOptions = AndroidOptions();
 
   /// Stores an authentication token.
   ///
   /// [value] - The token to store
   Future<void> setToken(String value) async {
-    await _sharedPreferences.setString(StorageConstants.token, value);
+    await _secureStorage.write(
+      key: StorageConstants.token,
+      value: value,
+      iOptions: _iosOptions,
+      aOptions: _androidOptions,
+    );
   }
 
   /// Retrieves the stored authentication token.
   ///
   /// Returns an empty string if no token is stored.
-  String get token =>
-      _sharedPreferences.getString(StorageConstants.token) ?? "";
+  Future<String> getToken() async =>
+      await _secureStorage.read(
+        key: StorageConstants.token,
+        iOptions: _iosOptions,
+        aOptions: _androidOptions,
+      ) ??
+      "";
 
   /// Stores a user ID.
   ///
   /// [value] - The user ID to store
   Future<void> setUserId(String value) async {
-    await _sharedPreferences.setString(StorageConstants.userId, value);
+    await _secureStorage.write(
+      key: StorageConstants.userId,
+      value: value,
+      iOptions: _iosOptions,
+      aOptions: _androidOptions,
+    );
   }
 
   /// Retrieves the stored user ID.
   ///
   /// Returns an empty string if no user ID is stored.
-  static String get userId =>
-      _sharedPreferences.getString(StorageConstants.userId) ?? "";
+  Future<String> user() async =>
+      await _secureStorage.read(
+        key: StorageConstants.token,
+        iOptions: _iosOptions,
+        aOptions: _androidOptions,
+      ) ??
+      "";
 
   /// Checks if the user is logged in.
   ///
@@ -65,17 +79,13 @@ class LocalStorageManager {
   /// Note: There appears to be a logic error in the implementation.
   /// The method returns true when token is empty, which is incorrect.
   Future<bool> isLoggedIn() async {
-    if (token.isEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return await getToken() != "";
   }
 
   /// Clears all stored data.
   ///
   /// This method removes all data stored in SharedPreferences.
   Future<void> clear() async {
-    await _sharedPreferences.clear();
+    await _secureStorage.deleteAll();
   }
 }
