@@ -64,7 +64,6 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   Future<DataState<PhoneAuthResult>> sendOTP({required String number}) async {
     try {
       final response = await authDataSource.sendOtp(number);
-
       if (response.success) {
         return DataSuccess(data: response);
       } else {
@@ -93,11 +92,17 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   /// - A [PhoneAuthResult] on success
   /// - A [MyBazaarException] on failure
   Future<DataState<PhoneAuthResult>> verifyOTP({
-    required String number,
+    required String phone,
+    required String verificationId,
     required String otp,
   }) async {
     try {
-      final response = await authDataSource.verifyOtp(number, otp);
+      final response = await authDataSource.verifyOtp(
+        phone,
+        verificationId,
+        otp,
+      );
+
       if (response.success) {
         return DataSuccess(data: response);
       } else {

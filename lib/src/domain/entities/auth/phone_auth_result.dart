@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class PhoneAuthResult extends Equatable {
   final bool success;
-  final String? message;
+  final String message;
   final String? verificationId;
   final int? resendToken;
   final User? user;
@@ -11,7 +11,7 @@ class PhoneAuthResult extends Equatable {
 
   const PhoneAuthResult({
     required this.success,
-    this.message,
+    required this.message,
     this.verificationId,
     this.resendToken,
     this.user,

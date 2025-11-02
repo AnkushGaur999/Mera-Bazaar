@@ -28,16 +28,16 @@ class ProductItem extends StatelessWidget {
               ),
               child: Image.network(
                 productEntity.imageUrl ?? "",
-                height: 54.h,
+                height: 50.h,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 errorBuilder:
                     (context, error, stackTrace) =>
-                        Icon(Icons.error, color: Colors.grey, size: 54.h),
+                        Icon(Icons.error, color: Colors.grey, size: 50.h),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

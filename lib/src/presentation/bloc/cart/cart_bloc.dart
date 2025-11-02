@@ -4,7 +4,7 @@ import 'package:mera_bazaar/src/core/network/data_state.dart';
 import 'package:mera_bazaar/src/domain/entities/cart/cart_entity.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/add_to_cart_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/delete_cart_item_use_case.dart';
-import 'package:mera_bazaar/src/domain/use_cases/cart/get_cart_item_use_case.dart';
+import 'package:mera_bazaar/src/domain/use_cases/cart/get_cart_items_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/update_cart_item_use_case.dart';
 
 part 'cart_event.dart';
@@ -76,7 +76,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     UpdateCartItemEvent event,
     Emitter<CartState> emit,
   ) async {
-    if (event.cartEntity.quantity! <= 0) {
+
+    if (event.cartEntity.quantity! == 0) {
       add(DeleteCartItemEvent(cartEntity: event.cartEntity));
       return;
     }

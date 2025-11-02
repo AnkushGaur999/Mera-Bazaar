@@ -1,4 +1,4 @@
-import 'package:mera_bazaar/src/data/models/cart/cart_response.dart';
+import 'package:mera_bazaar/src/data/models/cart/cart_data.dart';
 
 class CartEntity {
   final int? id;
@@ -37,7 +37,7 @@ class CartEntity {
     this.rating,
   });
 
-  CartResponse toModel(CartEntity instance) => CartResponse(
+  CartData toModel(CartEntity instance) => CartData(
     id: id,
     name: name,
     imageUrl: imageUrl,

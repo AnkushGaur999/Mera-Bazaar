@@ -14,7 +14,6 @@ part of "auth_bloc.dart";
 /// It extends [Equatable] to allow for easy comparison of events.
 sealed class AuthEvent extends Equatable {}
 
-
 /// Event for logging in a user.
 ///
 /// This event is dispatched when the user enters their email and password
@@ -23,11 +22,11 @@ sealed class AuthEvent extends Equatable {}
 class LoginEvent extends AuthEvent {
   final String email;
   final String password;
+
   LoginEvent({required this.email, required this.password});
 
   @override
   List<Object?> get props => [email, password];
-
 }
 
 /// Event for sending an OTP to a phone number.
@@ -58,11 +57,18 @@ class VerifyOtpEvent extends AuthEvent {
   /// The OTP entered by the user
   final String otp;
 
+  /// The Verification Id of user
+  final String verificationId;
+
   /// Creates a new [VerifyOtpEvent] with the specified phone number and OTP.
   ///
   /// [number] - The phone number the OTP was sent to
   /// [otp] - The OTP entered by the user
-  VerifyOtpEvent({required this.number, required this.otp});
+  VerifyOtpEvent({
+    required this.number,
+    required this.otp,
+    required this.verificationId,
+  });
 
   @override
   List<Object?> get props => [number, otp];

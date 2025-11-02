@@ -1,3 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:mera_bazaar/src/core/constants/app_apis.dart';
+import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
+
+import 'auth_interceptor.dart';
+
 /// Network client implementation using Dio.
 ///
 /// This class provides a wrapper around the Dio HTTP client with:
@@ -6,11 +12,6 @@
 /// - Authentication interceptor
 /// - Error handling
 /// - Simplified API for common HTTP methods
-
-import 'package:dio/dio.dart';
-import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
-
-import 'auth_interceptor.dart';
 
 /// A wrapper around Dio HTTP client with authentication and error handling.
 ///
@@ -35,7 +36,7 @@ class DioClient {
   DioClient({required this.localStorageManager}) {
     _dio =
         Dio()
-          ..options.baseUrl = "https://demo.com/"
+          ..options.baseUrl = AppApis.BASE_URL
           ..options.connectTimeout = const Duration(seconds: 30)
           ..options.receiveTimeout = const Duration(seconds: 30)
           ..options.sendTimeout = const Duration(seconds: 30)

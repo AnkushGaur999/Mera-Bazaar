@@ -1,6 +1,7 @@
 
 import 'package:mera_bazaar/main_export.dart';
 
+
 /// The root widget of the application.
 ///
 /// This widget:
@@ -43,9 +44,14 @@ class MyApp extends StatelessWidget {
                 title: 'Mera Bazaar',
                 theme: state.themeData,
                 routerConfig: AppRoutes.router,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                locale: const Locale("en"),
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  ],
+                supportedLocales: S.delegate.supportedLocales,
+                locale: const Locale('en'),
               );
             },
           );

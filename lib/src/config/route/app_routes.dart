@@ -16,9 +16,9 @@ import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_s
 import 'package:mera_bazaar/src/presentation/pages/dashboard/dashboard_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/notification/notification_screen.dart';
-import 'package:mera_bazaar/src/presentation/pages/login/login_screen.dart';
+import 'package:mera_bazaar/src/presentation/pages/authentication/login/login_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/order/orders_history_page.dart';
-import 'package:mera_bazaar/src/presentation/pages/otp/opt_screen.dart';
+import 'package:mera_bazaar/src/presentation/pages/authentication/login/otp/opt_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/product/product_details_page.dart';
 import 'package:mera_bazaar/src/presentation/pages/theme_update_page.dart';
 import '../../presentation/pages/splash/splash_screen.dart';
@@ -82,7 +82,12 @@ class AppRoutes {
       GoRoute(
         name: otp,
         path: _otp,
-        builder: (context, state) => const OtpScreen(),
+        builder: (context, state) {
+          final data = state.extra as Map<String, String>;
+          final num = data["number"]!;
+          final id = data["verificationId"]!;
+          return OtpScreen(number: num, verificationId: id);
+        },
       ),
 
       // Dashboard and main navigation
@@ -106,9 +111,8 @@ class AppRoutes {
       GoRoute(
         name: category,
         path: _category,
-        builder:
-            (context, state) =>
-                CategoryScreen(categoryId: state.extra as String),
+        builder: (context, state) =>
+            CategoryScreen(categoryId: state.extra as String),
       ),
       GoRoute(
         name: productDetails,
@@ -150,7 +154,7 @@ class AppRoutes {
           state.path == _account ||
           state.path == _notification ||
           state.path == _profile) {
-        if (await getIt<LocalStorageManager>().getToken() != "") {
+        if (firebaseAuth.currentUser == null) {
           return _login;
         }
         return null;

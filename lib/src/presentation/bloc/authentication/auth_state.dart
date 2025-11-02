@@ -81,13 +81,16 @@ class SendOtpSuccess extends AuthState {
   /// A message indicating the success of the operation
   final String message;
 
+  ///verificationId to validate user
+  final String verificationId;
+
   /// Creates a new [SendOtpSuccess] state with the specified message.
   ///
   /// [message] - A message indicating the success of the operation
-  SendOtpSuccess({required this.message});
+  SendOtpSuccess({required this.message, required this.verificationId});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, verificationId];
 }
 
 /// State indicating that sending an OTP failed.

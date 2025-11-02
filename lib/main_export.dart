@@ -41,14 +41,14 @@ export 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
 // Dependency Injection
 export 'src/config/di/service_locator.dart';
 
-// Localization
-export 'package:mera_bazaar/src/config/localization/app_localizations.dart';
-
 // Notification Service
 export 'package:mera_bazaar/src/config/services/notification_service.dart';
 
 // Flavor Config
 export 'package:mera_bazaar/src/config/flavors/flavor_config.dart';
+
+export  'package:flutter_localizations/flutter_localizations.dart';
+export 'package:mera_bazaar/generated/l10n.dart';
 
 
 

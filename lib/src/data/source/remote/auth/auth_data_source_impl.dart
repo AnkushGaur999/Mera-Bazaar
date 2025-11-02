@@ -1,14 +1,7 @@
-/// Implementation of the authentication data source.
-///
-/// This class implements the [AuthDataSource] interface and provides
-/// concrete implementations for authentication-related API calls using Firebase
-/// Authentication and Firestore. It handles:
-/// - Sending OTP via Firebase Phone Authentication
-/// - Verifying OTP using Firebase credentials
-/// - Retrieving user profile from Firestore
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mera_bazaar/main_export.dart';
 import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
 import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
 import 'package:mera_bazaar/src/core/network/data_state.dart';
@@ -17,6 +10,15 @@ import 'package:mera_bazaar/src/data/models/auth/send_otp/send_otp_response.dart
 import 'package:mera_bazaar/src/data/models/auth/verify_otp/verify_otp_response.dart';
 import 'package:mera_bazaar/src/data/source/remote/auth/auth_data_source.dart';
 import 'package:mera_bazaar/src/domain/entities/auth/phone_auth_result.dart';
+
+/// Implementation of the authentication data source.
+///
+/// This class implements the [AuthDataSource] interface and provides
+/// concrete implementations for authentication-related API calls using Firebase
+/// Authentication and Firestore. It handles:
+/// - Sending OTP via Firebase Phone Authentication
+/// - Verifying OTP using Firebase credentials
+/// - Retrieving user profile from Firestore
 
 /// A concrete implementation of the [AuthDataSource] interface.
 ///
@@ -27,15 +29,6 @@ class AuthDataSourceImpl extends AuthDataSource {
   /// The Dio client for making HTTP requests
   final DioClient dioClient;
 
-  /// The Firebase Authentication instance
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  /// The Firestore instance for database operations
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-
-  /// The Firebase Authentication instance
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
   /// Creates a new instance of [AuthDataSourceImpl].
   ///
   /// Requires a [DioClient] to be provided for making HTTP requests.
@@ -44,7 +37,7 @@ class AuthDataSourceImpl extends AuthDataSource {
   @override
   Future<DataState<User>> login(String email, String password) async {
     try {
-      final response = await _firebaseAuth.signInWithEmailAndPassword(
+      final response = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -73,47 +66,62 @@ class AuthDataSourceImpl extends AuthDataSource {
   ///
   /// [number] - The phone number to send the OTP to (without country code)
   Future<PhoneAuthResult> sendOtp(String number) async {
+    final Completer<PhoneAuthResult> completer = Completer();
     try {
-      final Completer<PhoneAuthResult> completer = Completer();
-
-      await _auth.verifyPhoneNumber(
+      await firebaseAuth.verifyPhoneNumber(
         phoneNumber: "+91$number",
         verificationCompleted: (PhoneAuthCredential credential) async {
-          final UserCredential userCredential = await _auth
+          if (completer.isCompleted) return;
+          final UserCredential userCredential = await firebaseAuth
               .signInWithCredential(credential);
           completer.complete(
-            PhoneAuthResult(success: true, user: userCredential.user),
+            PhoneAuthResult(
+              success: true,
+              user: userCredential.user,
+              message: 'Verification Successfully Completed',
+            ),
           );
         },
         verificationFailed: (FirebaseAuthException verificationFailed) async {
+          if (completer.isCompleted) return;
           completer.complete(
             PhoneAuthResult(
               success: false,
-              message: verificationFailed.message,
+              message: verificationFailed.message!,
             ),
           );
         },
         codeSent: (String verificationId, int? resendToken) {
+          if (completer.isCompleted) return;
           completer.complete(
             PhoneAuthResult(
               success: true,
               verificationId: verificationId,
               resendToken: resendToken,
+              message:
+                  "Verification code successfully sent to your register number.",
             ),
           );
         },
         codeAutoRetrievalTimeout: (String verificationId) {
+          if (completer.isCompleted) return;
           completer.complete(
-            const PhoneAuthResult(
+            PhoneAuthResult(
               success: false,
+              verificationId: verificationId,
               message: "SMS code auto-retrieval timed out.",
             ),
           );
         },
       );
       return completer.future;
-    } catch (_) {
-      rethrow;
+    } catch (e) {
+      if (!completer.isCompleted) {
+        completer.complete(
+          PhoneAuthResult(success: false, message: e.toString()),
+        );
+      }
+      return completer.future;
     }
   }
 
@@ -127,18 +135,35 @@ class AuthDataSourceImpl extends AuthDataSource {
   ///
   /// [verificationId] - The ID of the verification process
   /// [otp] - The OTP code to verify
-  Future<PhoneAuthResult> verifyOtp(String verificationId, String otp) async {
+  Future<PhoneAuthResult> verifyOtp(
+    String phone,
+    String verificationId,
+    String otp,
+  ) async {
     try {
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
         verificationId: verificationId,
         smsCode: otp,
       );
 
-      final userCredential = await _auth.signInWithCredential(
+      final userCredential = await firebaseAuth.signInWithCredential(
         phoneAuthCredential,
       );
 
-      return PhoneAuthResult(success: true, user: userCredential.user);
+      if (!await isUserAlreadyExist(phone: userCredential.user?.phoneNumber)) {
+        addUser(user: userCredential.user);
+      }
+
+      return PhoneAuthResult(
+        success: true,
+        message: "Successfully Authenticate User.",
+        user: userCredential.user,
+      );
+    } on FirebaseAuthException catch (e) {
+      return PhoneAuthResult(
+        success: false,
+        message: e.message ?? "Something went wrong!",
+      );
     } catch (_) {
       rethrow;
     }
@@ -155,10 +180,49 @@ class AuthDataSourceImpl extends AuthDataSource {
   /// [token] - The user's document ID in Firestore
   Future<GetUserProfileResponse> getUserProfile({required String token}) async {
     try {
-      final response = await _fireStore.collection("users").doc(token).get();
+      final response = await fireStore.collection("users").doc(token).get();
       return GetUserProfileResponse.fromJson(response.data()!);
     } catch (_) {
       rethrow;
     }
+  }
+
+  @override
+  Future<void> addUser({required User? user}) async {
+    if (user == null) return;
+
+    try {
+      await fireStore.collection("users").add(user.toJson());
+    } on FirebaseException catch (e) {
+      debugPrint("Exception: ${e.message}");
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> isUserAlreadyExist({required String? phone}) async {
+    final users = await fireStore
+        .collection("users")
+        .where("phoneNumber", isEqualTo: phone)
+        .limit(1)
+        .get();
+
+    return users.docs.isNotEmpty;
+  }
+}
+
+extension ToUserToJson on User {
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      "uid": uid,
+      "phoneNumber": phoneNumber,
+      "displayName": displayName ?? "Guest",
+      "email": email,
+      "emailVerified": emailVerified,
+      "photoURL": photoURL,
+      "refreshToken": refreshToken,
+      "tenantId": tenantId,
+    };
   }
 }

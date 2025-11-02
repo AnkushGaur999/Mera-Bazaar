@@ -1,0 +1,12 @@
+{
+  "hello": "Hello",
+  "welcome": "Welcome",
+  "popularProducts": "Popular Products",
+  "viewAll": "View All",
+  "newArrival": "New Arrival",
+  "recommendedProducts": "Recommended Products",
+  "home": "Home",
+  "category": "Category",
+  "cart": "Cart",
+  "account": "Account"
+}

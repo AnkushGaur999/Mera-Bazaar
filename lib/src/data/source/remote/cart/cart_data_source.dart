@@ -6,7 +6,7 @@
 /// - Retrieving cart items
 /// - Deleting cart items
 /// - Updating cart items
-import 'package:mera_bazaar/src/data/models/cart/cart_response.dart';
+import 'package:mera_bazaar/src/data/models/cart/cart_data.dart';
 
 /// Abstract class defining the contract for cart data source operations.
 ///
@@ -20,13 +20,19 @@ abstract class CartDataSource {
   /// It returns a success message string.
   ///
   /// [cartData] - The cart item data to add
-  Future<String> addToCart({required CartResponse cartData});
+  Future<String> addToCart({required CartData cartData});
+
+  /// Retrieves specific items in the cart.
+  ///
+  /// This method should make an API call to get specific cart item.
+  /// It returns of [CartData] containing the cart item.
+  Future<List<CartData>> getCartItem({required String id});
 
   /// Retrieves all items in the cart.
   ///
   /// This method should make an API call to get all cart items.
-  /// It returns a list of [CartResponse] containing the cart items.
-  Future<List<CartResponse>> getCartItems();
+  /// It returns a list of [CartData] containing the cart items.
+  Future<List<CartData>> getCartItems();
 
   /// Deletes an item from the cart.
   ///
@@ -42,5 +48,5 @@ abstract class CartDataSource {
   /// It returns a success message string.
   ///
   /// [cartData] - The updated cart item data
-  Future<String> updateCartItem({required CartResponse cartData});
+  Future<String> updateCartItem({required CartData cartData});
 }

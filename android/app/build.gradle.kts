@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mera_bazaar"
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -71,14 +71,14 @@ android {
 
         create("staging") {
             dimension = "default"
-           // applicationIdSuffix = ".staging"
+            // applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
             resValue(type = "string", name = "app_name", value = "Mera Bazaar Staging")
         }
 
         create("development") {
             dimension = "default"
-           // applicationIdSuffix = ".development"
+            // applicationIdSuffix = ".development"
             versionNameSuffix = "-development"
             resValue(
                 type = "string",
@@ -89,7 +89,7 @@ android {
 
         create("production") {
             dimension = "default"
-          //  applicationIdSuffix = ".production"
+            //  applicationIdSuffix = ".production"
             resValue(
                 type = "string",
                 name = "app_name",
@@ -105,7 +105,7 @@ flutter {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }

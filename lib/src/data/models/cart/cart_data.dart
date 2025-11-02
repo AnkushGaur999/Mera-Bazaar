@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mera_bazaar/src/domain/entities/cart/cart_entity.dart';
 
-part 'cart_response.g.dart';
+part 'cart_data.g.dart';
 
 @JsonSerializable()
-class CartResponse {
+class CartData {
   @JsonKey(name: "id")
   final int? id;
 
@@ -39,7 +39,7 @@ class CartResponse {
   final double? rating;
 
 
-  CartResponse({
+  CartData({
     this.id,
     this.name,
     this.imageUrl,
@@ -53,12 +53,12 @@ class CartResponse {
     this.rating,
   });
 
-  factory CartResponse.fromJson(Map<String, dynamic> json) =>
-      _$CartResponseFromJson(json);
+  factory CartData.fromJson(Map<String, dynamic> json) =>
+      _$CartDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CartResponseToJson(this);
+  Map<String, dynamic> toJson() => _$CartDataToJson(this);
 
-  CartEntity toEntity(CartResponse instance) => CartEntity(
+  CartEntity toEntity(CartData instance) => CartEntity(
     id: instance.id,
     name: instance.name,
     imageUrl: instance.imageUrl,

@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/src/config/generated/assets.gen.dart';
 import 'package:mera_bazaar/src/config/route/app_routes.dart';
 import 'package:mera_bazaar/src/presentation/bloc/authentication/auth_bloc.dart';
-import 'package:mera_bazaar/src/presentation/pages/otp/widgets/otp_fields.dart';
 import 'package:mera_bazaar/src/presentation/widets/loading_button.dart';
+
+import 'widgets/otp_fields.dart';
 
 class OtpScreen extends StatefulWidget {
   final String number;

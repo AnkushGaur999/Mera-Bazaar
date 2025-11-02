@@ -11,6 +11,8 @@
 /// The setup follows clean architecture principles, ensuring proper separation of concerns
 /// and dependency flow from outer layers (data) to inner layers (domain).
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
@@ -44,7 +46,7 @@ import 'package:mera_bazaar/src/domain/use_cases/auth/user_login_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/auth/verify_otp_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/add_to_cart_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/delete_cart_item_use_case.dart';
-import 'package:mera_bazaar/src/domain/use_cases/cart/get_cart_item_use_case.dart';
+import 'package:mera_bazaar/src/domain/use_cases/cart/get_cart_items_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/cart/update_cart_item_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/category/category_use_case.dart';
 import 'package:mera_bazaar/src/domain/use_cases/home/get_carousel_use_case.dart';
@@ -57,6 +59,13 @@ import 'package:mera_bazaar/src/presentation/bloc/home/home_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/order/order_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/product/product_bloc.dart';
 import 'package:mera_bazaar/src/presentation/bloc/theme/theme_bloc.dart';
+
+
+/// The Firestore instance for database operations
+final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+/// The Firebase Authentication instance
+final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 /// Global instance of GetIt for dependency injection
 GetIt getIt = GetIt.instance;

@@ -8,9 +8,14 @@ class VerifyOtpUseCase {
   VerifyOtpUseCase({required this.authenticationRepository});
 
   Future<DataState<PhoneAuthResult>> call({
-    required String number,
+    required String phone,
+    required String verificationId,
     required String otp,
   }) async {
-    return await authenticationRepository.verifyOTP(number: number, otp: otp);
+    return await authenticationRepository.verifyOTP(
+      phone: phone,
+      verificationId: verificationId,
+      otp: otp,
+    );
   }
 }

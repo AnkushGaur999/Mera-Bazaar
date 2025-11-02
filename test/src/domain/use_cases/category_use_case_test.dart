@@ -41,8 +41,6 @@ void main() {
       // Act: Call the method on the class under test
       final result = await categoryUseCase();
 
-      print("Result: ${result.data}");
-
       // Assert: Verify the result and mock interactions
       expect(result, isA<DataSuccess<List<CategoryEntity>>>());
       expect(result.data, expectedCategories);
@@ -68,8 +66,6 @@ void main() {
 
         // Act
         final result = await categoryUseCase();
-
-        print("Result: ${result.exception}");
 
         // Assert
         expect(result, isA<DataError<List<CategoryEntity>>>());

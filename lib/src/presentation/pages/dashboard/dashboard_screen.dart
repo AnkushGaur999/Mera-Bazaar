@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mera_bazaar/generated/l10n.dart';
 import 'package:mera_bazaar/src/config/di/service_locator.dart';
 import 'package:mera_bazaar/src/config/route/app_routes.dart';
-import 'package:mera_bazaar/src/core/local/local_storage_manager.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/account/account_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/cart/cart_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/category/category_screen.dart';
 import 'package:mera_bazaar/src/presentation/pages/dashboard/home/home_screen.dart';
-import '../../../config/localization/app_localizations.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -23,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _onItemTapped(int index) async {
     if (index == 2 || index == 3) {
-      if (await getIt<LocalStorageManager>().getToken() == "") {
+      if (firebaseAuth.currentUser == null) {
         if (mounted) context.pushNamed(AppRoutes.login);
         return;
       }
@@ -69,19 +68,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: const Icon(Icons.home_outlined),
-                label: AppLocalizations.of(context).home,
+                label: S.of(context).home,
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.category_sharp),
-                label: AppLocalizations.of(context).category,
+                label: S.of(context).category,
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.shopping_cart),
-                label: AppLocalizations.of(context).cart,
+                label: S.of(context).cart,
               ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.account_circle),
-                label: AppLocalizations.of(context).account,
+                label: S.of(context).account,
               ),
             ],
             currentIndex: _selectedIndex,

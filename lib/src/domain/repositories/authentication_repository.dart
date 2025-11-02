@@ -13,8 +13,9 @@ abstract class AuthenticationRepository {
   Future<DataState<PhoneAuthResult>> sendOTP({required String number});
 
   Future<DataState<PhoneAuthResult>> verifyOTP({
-    required String number,
+    required String phone,
     required String otp,
+    required String verificationId,
   });
 
   Future<DataState<GetUserProfileEntity>> getUserProfile({

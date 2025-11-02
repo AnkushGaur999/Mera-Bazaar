@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mera_bazaar/main_export.dart';
 import 'package:mera_bazaar/src/config/generated/assets.gen.dart';
-import 'package:mera_bazaar/src/presentation/pages/login/widget/login_text_field.dart';
 import 'package:mera_bazaar/src/presentation/widets/loading_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'widget/login_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

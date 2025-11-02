@@ -1,3 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
+import 'package:mera_bazaar/src/core/network/data_state.dart';
+import 'package:mera_bazaar/src/data/source/remote/cart/cart_data_source.dart';
+import 'package:mera_bazaar/src/domain/entities/cart/cart_entity.dart';
+import 'package:mera_bazaar/src/domain/repositories/cart_repository.dart';
+
 /// Implementation of the cart repository.
 ///
 /// This class implements the [CartRepository] interface and provides
@@ -6,12 +13,6 @@
 /// - Retrieving cart items
 /// - Deleting cart items
 /// - Updating cart items
-import 'package:dio/dio.dart';
-import 'package:mera_bazaar/src/core/exceptions/network_exception.dart';
-import 'package:mera_bazaar/src/core/network/data_state.dart';
-import 'package:mera_bazaar/src/data/source/remote/cart/cart_data_source.dart';
-import 'package:mera_bazaar/src/domain/entities/cart/cart_entity.dart';
-import 'package:mera_bazaar/src/domain/repositories/cart_repository.dart';
 
 /// A concrete implementation of the [CartRepository] interface.
 ///
@@ -116,6 +117,21 @@ class CartRepositoryImpl extends CartRepository {
         cartData: cartEntity.toModel(cartEntity),
       );
       return DataSuccess(data: response);
+    } on DioException catch (e) {
+      return DataError(exception: MyBazaarException.fromDioError(e));
+    } catch (e) {
+      return DataError(exception: MyBazaarException.fromException(e));
+    }
+  }
+
+  @override
+  Future<DataState<CartEntity>> getCartItem({required String id}) async {
+    try {
+      final result = await cartDataSource.getCartItem(id: id);
+
+      CartEntity entity = result.first.toEntity(result.first);
+
+      return DataSuccess(data: entity);
     } on DioException catch (e) {
       return DataError(exception: MyBazaarException.fromDioError(e));
     } catch (e) {

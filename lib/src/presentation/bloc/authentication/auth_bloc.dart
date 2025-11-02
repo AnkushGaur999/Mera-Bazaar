@@ -95,7 +95,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final response = await sendOtpUseCase.call(number: event.number);
 
     if (response is DataSuccess) {
-      emit(SendOtpSuccess(message: response.data!.message!));
+      emit(
+        SendOtpSuccess(
+          message: response.data!.message!,
+          verificationId: response.data!.verificationId!,
+        ),
+      );
     } else {
       emit(SendOtpError(message: response.exception!.message));
     }
@@ -113,11 +118,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _verifyOTP(VerifyOtpEvent event, Emitter<AuthState> emit) async {
     emit(VerifyOtpLoading());
     final response = await verifyOtpUseCase.call(
-      number: event.number,
+      phone: event.number,
+      verificationId: event.verificationId,
       otp: event.otp,
     );
     if (response is DataSuccess) {
-      emit(VerifyOtpSuccess(message: response.data!.message!));
+      emit(VerifyOtpSuccess(message: response.data!.message));
     } else {
       emit(VerifyOtpError(message: response.exception!.message));
     }

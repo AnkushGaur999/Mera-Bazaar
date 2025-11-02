@@ -11,7 +11,7 @@
 /// to update endpoints if the API changes.
 class AppApis {
   /// Base URL for all API requests
-  static const BASE_URL = "http://abcd.com/";
+  static const BASE_URL = "https://fakestoreapi.in/api/";
 
   /// Endpoint for sending OTP to a phone number
   static const SEND_OTP = "sendOtp";
@@ -21,4 +21,11 @@ class AppApis {
 
   /// Endpoint for retrieving user information
   static const GET_USER = "user";
+
+  /// Endpoint for retrieving products
+  static const GET_PRODUCTS = "products";
+
+  /// Endpoint for retrieving a product
+  static const GET_PRODUCT = "products";
+
 }

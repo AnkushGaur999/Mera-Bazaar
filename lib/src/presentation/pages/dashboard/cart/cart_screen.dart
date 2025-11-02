@@ -19,7 +19,8 @@ class CartScreen extends StatelessWidget {
                   current is GetCartItemsFailed,
 
           builder: (context, state) {
-            if (state is GetCartItemsLoading) {
+
+            if (state is GetCartItemsLoading || state is UpdateCartItemLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -41,6 +42,17 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
                 );
+              }
+
+              int totalAmount = 0;
+              int totalDiscount = 0;
+
+              for(int i =0; i<state.cartItems.length; i++){
+                totalAmount += state.cartItems[i].totalOriginalPrice!.toInt();
+                totalDiscount  += state.cartItems[i].totalDiscountedPrice!.toInt();
+
+                //state.cartItems[i].discountedPrice
+
               }
 
               return Column(

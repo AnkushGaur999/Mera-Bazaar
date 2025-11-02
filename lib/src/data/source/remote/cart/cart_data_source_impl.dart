@@ -1,19 +1,20 @@
+import 'package:mera_bazaar/main_export.dart';
+import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
+import 'package:mera_bazaar/src/data/models/cart/cart_data.dart';
+import 'package:mera_bazaar/src/data/source/remote/cart/cart_data_source.dart';
+
 /// Implementation of the cart data source.
 ///
 /// This class implements the [CartDataSource] interface and provides
 /// concrete implementations for cart-related API calls using Firestore.
 /// It handles adding, retrieving, updating, and deleting cart items
 /// in the Firestore database.
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mera_bazaar/src/core/network/client/dio_client.dart';
-import 'package:mera_bazaar/src/data/models/cart/cart_response.dart';
-import 'package:mera_bazaar/src/data/source/remote/cart/cart_data_source.dart';
 
 /// A concrete implementation of the [CartDataSource] interface.
 ///
 /// This class uses Firestore to manage cart data in the database.
 /// It handles CRUD operations for cart items and converts between
-/// Firestore documents and [CartResponse] models.
+/// Firestore documents and [CartData] models.
 class CartDataSourceImpl extends CartDataSource {
   /// The Dio client for making HTTP requests
   final DioClient dioClient;
@@ -22,9 +23,6 @@ class CartDataSourceImpl extends CartDataSource {
   ///
   /// Requires a [DioClient] to be provided for making HTTP requests.
   CartDataSourceImpl({required this.dioClient});
-
-  /// The Firestore instance for database operations
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   @override
   /// Adds an item to the cart.
@@ -35,8 +33,12 @@ class CartDataSourceImpl extends CartDataSource {
   /// Returns a success message string.
   ///
   /// [cartData] - The cart item data to add
-  Future<String> addToCart({required CartResponse cartData}) async {
-    await _fireStore.collection("cart").add(cartData.toJson());
+  Future<String> addToCart({required CartData cartData}) async {
+    await fireStore
+        .collection("cart")
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("items")
+        .add(cartData.toJson());
 
     return "Successfully Add To Cart";
   }
@@ -45,14 +47,19 @@ class CartDataSourceImpl extends CartDataSource {
   /// Retrieves all items in the cart.
   ///
   /// This method retrieves all documents from the "cart" collection in Firestore
-  /// and converts them to [CartResponse] models.
+  /// and converts them to [CartData] models.
   ///
-  /// Returns a list of [CartResponse] containing all cart items.
-  Future<List<CartResponse>> getCartItems() async {
-    final response = await _fireStore.collection("cart").get();
+  /// Returns a list of [CartData] containing all cart items.
+  Future<List<CartData>> getCartItems() async {
+    final response = await fireStore
+        .collection("cart")
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("items")
+        .get();
 
-    final cartList =
-        response.docs.map((e) => CartResponse.fromJson(e.data())).toList();
+    final cartList = response.docs
+        .map((e) => CartData.fromJson(e.data()))
+        .toList();
 
     return cartList;
   }
@@ -67,12 +74,21 @@ class CartDataSourceImpl extends CartDataSource {
   ///
   /// [id] - The ID of the cart item to delete
   Future<String> deleteCartItem({required int id}) async {
-    final response =
-        await _fireStore.collection("cart").where("id", isEqualTo: id).get();
+    final response = await fireStore
+        .collection("cart")
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("items")
+        .where("id", isEqualTo: id)
+        .limit(1)
+        .get();
 
-    for (var element in response.docs) {
-      await _fireStore.collection("cart").doc(element.id).delete();
-    }
+
+    await fireStore
+        .collection("cart")
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("items")
+        .doc(response.docs.first.id)
+        .delete();
 
     return "Successfully Removed From Cart";
   }
@@ -86,20 +102,52 @@ class CartDataSourceImpl extends CartDataSource {
   /// Returns a success message string.
   ///
   /// [cartData] - The updated cart item data
-  Future<String> updateCartItem({required CartResponse cartData}) async {
-    final response =
-        await _fireStore
-            .collection("cart")
-            .where("id", isEqualTo: cartData.id)
-            .get();
+  Future<String> updateCartItem({required CartData cartData}) async {
+    try {
+      final response = await fireStore
+          .collection("cart")
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection("items")
+          .where("id", isEqualTo: cartData.id)
+          .limit(1)
+          .get();
 
-    _fireStore.collection("cart").doc(response.docs[0].id).update({
-      "quantity": cartData.quantity,
-      "total_discounted_price": cartData.totalDiscountedPrice,
-      "total_original_price": cartData.totalOriginalPrice,
-      "discount": cartData.discount,
-    });
+      fireStore
+          .collection("cart")
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection("items")
+          .doc(response.docs.first.id)
+          .update({
+            "quantity": cartData.quantity,
+            "total_discounted_price": cartData.totalDiscountedPrice,
+            "total_original_price": cartData.totalOriginalPrice,
+            "discount": cartData.discount,
+          });
+    } on FirebaseException catch (_) {
+      return "Server Error! Please Try again";
+    } catch (e) {
+      return "Something went wrong! Please try after some time";
+    }
 
     return "Successfully Updated";
+  }
+
+  @override
+  Future<List<CartData>> getCartItem({required String id}) async {
+    try {
+      final result = await fireStore
+          .collection("cart")
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection("items")
+          .where("id", isEqualTo: id)
+          .limit(1)
+          .get();
+
+      return result.docs.isNotEmpty
+          ? [CartData.fromJson(result.docs.first.data())]
+          : [];
+    } catch (e) {
+      rethrow;
+    }
   }
 }

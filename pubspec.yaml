@@ -7,7 +7,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.8.1
 
 dependencies:
   flutter:
@@ -22,37 +22,36 @@ dependencies:
   dio: ^5.8.0+1
   json_annotation: ^4.9.0
   get_it: ^8.0.3
-  go_router: ^14.8.1
+  go_router: ^16.0.0
   carousel_slider: ^5.0.0
   cached_network_image: ^3.4.1
   flutter_screenutil: ^5.9.3
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
-  firebase_core: ^3.14.0
-  firebase_auth: ^5.6.0
-  cloud_firestore: ^5.6.6
+  firebase_core: ^4.2.0
+  firebase_auth: ^6.1.1
+  cloud_firestore: ^6.0.3
   shimmer: ^3.0.0
-  firebase_messaging: ^15.2.5
+  firebase_messaging: ^16.0.3
   flutter_local_notifications: ^19.0.0
-  firebase_analytics: ^11.4.5
+  firebase_analytics: ^12.0.3
   flutter_secure_storage: ^9.2.4
-  google_sign_in: ^6.3.0
+  google_sign_in: ^7.1.0
+  encrypt_env: ^1.1.2
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
   build_runner: ^2.4.15
   json_serializable: ^6.9.4
   flutter_gen_runner: ^5.10.0
   mockito: ^5.4.4
 
 
-flutter_gen:
-  output: lib/src/config/generated/
 
 
 flutter:
@@ -65,7 +64,8 @@ flutter:
     - assets/icons/
 
   
-  
+flutter_intl:
+  enabled: true
   
   
 

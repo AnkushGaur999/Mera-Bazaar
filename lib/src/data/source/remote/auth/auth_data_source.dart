@@ -41,7 +41,11 @@ abstract class AuthDataSource {
   ///
   /// [verificationId] - The ID of the verification process
   /// [otp] - The OTP code to verify
-  Future<PhoneAuthResult> verifyOtp(String verificationId, String otp);
+  Future<PhoneAuthResult> verifyOtp(
+    String phone,
+    String verificationId,
+    String otp,
+  );
 
   /// Retrieves the user profile for the specified token.
   ///
@@ -51,4 +55,11 @@ abstract class AuthDataSource {
   ///
   /// [token] - The authentication token to use for the request
   Future<GetUserProfileResponse> getUserProfile({required String token});
+
+
+
+  Future<void> addUser({required User user});
+
+
+  Future<bool> isUserAlreadyExist({required String? phone});
 }

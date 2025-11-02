@@ -1,1 +1,12 @@
-{}
+{
+  "hello": "नमस्ते",
+  "welcome": "स्वागत",
+  "popularProducts": "लोकप्रिय उत्पाद",
+  "viewAll": "सभी देखें",
+  "newArrival": "नई आगमन",
+  "recommendedProducts": "अनुशंसित उत्पाद",
+  "home": "होम",
+  "category": "श्रेणी",
+  "cart": "कार्ट",
+  "account": "खाता"
+}

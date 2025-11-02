@@ -17,7 +17,6 @@ class OrdersHistoryPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is GetOrdersHistoryLoaded) {
 
-            print("List: ${state.orders.toList()}");
 
             return ListView.builder(
               padding: EdgeInsets.all(16.r),

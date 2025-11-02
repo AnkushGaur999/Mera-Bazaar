@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cart_response.dart';
+part of 'cart_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
+CartData _$CartDataFromJson(Map<String, dynamic> json) => CartData(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String?,
   imageUrl: json['image_url'] as String?,
@@ -20,7 +20,7 @@ CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
   rating: (json['rating'] as num?)?.toDouble(),
 );
 
-Map<String, dynamic> _$CartResponseToJson(CartResponse instance) =>
+Map<String, dynamic> _$CartDataToJson(CartData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
