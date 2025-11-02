@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             const SizedBox(height: 10),
             const Text(
-              "We will send you 4 digit code \nverification code",
+              "We will send you 6 digit code \nverification code",
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 16,
@@ -67,12 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
               maxLength: 10,
             ),
 
-            // LoginTextField(controller: _emailController, label: "Enter Email"),
-
-            // LoginTextField(
-            //   controller: _passwordController,
-            //   label: "Enter Password",
-            // ),
             const SizedBox(height: 10),
             BlocConsumer<AuthBloc, AuthState>(
               builder: (context, state) {
@@ -86,56 +80,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 return LoadingButton(
                   text: "SEND OTP",
-                  onPress: () {
-                    // if (_emailController.text.isEmpty ||
-                    //     _passwordController.text.isEmpty) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(
-                    //       content: Text("Please enter valid mobile number"),
-                    //     ),
-                    //   );
-                    // } else {
-                    //   if (!_emailController.text.isValidEmail()) {
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       const SnackBar(
-                    //         content: Text("Please enter valid email"),
-                    //       ),
-                    //     );
-                    //   } else {
-                    //     context.read<AuthBloc>().add(
-                    //       LoginEvent(
-                    //         email: _emailController.text,
-                    //         password: _passwordController.text,
-                    //       ),
-                    //     );
-                    //   }
-                    // }
-
-                    if (_numberController.text.isEmpty ||
-                        _numberController.text.length < 10) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Please enter 10 digit number"),
-                        ),
-                      );
-                    } else {
-                      context.read<AuthBloc>().add(
-                        SendOtpEvent(number: _numberController.text),
-                      );
-                    }
+                  onPress: () async {
+                    context.read<AuthBloc>().add(
+                      SendOtpEvent(number: _numberController.text),
+                    );
                   },
                 );
               },
               listener: (context, state) {
                 if (state is SendOtpSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Login Successful"),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  final data = {
+                    "number": _numberController.text,
+                    "verificationId": state.verificationId,
+                  };
 
-                  context.go(AppRoutes.dashboard);
+                  context.pushNamed(AppRoutes.otp, extra: data);
                 } else if (state is SendOtpError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -167,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(12.r),
                 onTap: () {
                   // context.pushNamed(AppRoutes.otp);
-                  _signInWithGoogle();
+                  ////_signInWithGoogle();
                 },
                 child: Image.asset(Assets.icons.googleIcon.path),
               ),
@@ -191,24 +150,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
         await auth.signInWithPopup(googleProvider);
       } else {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAccount googleUser = await GoogleSignIn.instance
+            .authenticate();
 
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
+        final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-        if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
-          // Create a new credential
+        if (googleAuth.idToken != null && googleAuth.idToken != null) {
+
           final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth?.accessToken,
-            idToken: googleAuth?.idToken,
+            accessToken: googleAuth.idToken,
+            idToken: googleAuth.idToken,
           );
-          await auth.signInWithCredential(credential);
+          final userCredential = await auth.signInWithCredential(credential);
+
+          debugPrint("User: ${userCredential.user}");
         }
       }
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.message ?? e.code)));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message ?? e.code)));
+      }
     }
   }
 
